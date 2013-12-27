@@ -1,0 +1,11 @@
+<config>
+  <modules>
+    <Ebanx_Ebanx>
+      <active>true</active>
+      <codePool>local</codePool>
+      <depends>
+        <Mage_Payment />
+      </depends>
+    </Ebanx_Ebanx>
+  </modules>
+</config>

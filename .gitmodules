@@ -1,0 +1,3 @@
+[submodule "lib/Ebanx"]
+	path = lib/Ebanx
+	url = https://github.com/ebanx/ebanx-php.git

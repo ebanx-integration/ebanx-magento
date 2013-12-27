@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Ebanx_Ebanx>
+			<version>1.0.0</version>
+		</Ebanx_Ebanx>
+	</modules>
+
+	<global>
+		<resources>
+			<ebanx_setup>
+				<setup>
+					<module>Ebanx_Ebanx</module>
+					<class>Mage_Sales_Model_Mysql4_Setup</class>
+				</setup>
+			</ebanx_setup>
+		</resources>
+
+		<models>
+			<ebanx>
+				<class>Ebanx_Ebanx_Model</class>
+			</ebanx>
+      <ebanx_adminhtml>
+	      <class>Ebanx_Ebanx_Adminhtml_Model</class>
+      </ebanx_adminhtml>
+		</models>
+
+		<helpers>
+			<ebanx>
+				<class>Ebanx_Ebanx_Helper</class>
+			</ebanx>
+		</helpers>
+
+		<payment>
+			<groups>
+				<ebanx>Ebanx</ebanx>
+			</groups>
+		</payment>
+
+    <blocks>
+      <ebanx>
+        <class>Ebanx_Ebanx_Block</class>
+      </ebanx>
+    </blocks>
+
+    <events>
+      <checkout_type_onepage_save_order_after>
+        <observers>
+          <ebanx_observer>
+            <class>Ebanx_Ebanx_Model_Observer</class>
+            <method>saveOrderQuoteToSession</method>
+          </ebanx_observer>
+        </observers>
+      </checkout_type_onepage_save_order_after>
+    </events>
+	</global>
+
+	<frontend>
+    <routers>
+      <ebanx>
+        <use>standard</use>
+        <args>
+          <module>Ebanx_Ebanx</module>
+          <frontName>ebanx</frontName>
+        </args>
+      </ebanx>
+    </routers>
+  </frontend>
+
+	<default>
+		<payment>
+			<ebanx>
+				<model>ebanx/payment</model>
+				<group>ebanx</group>
+				<active>1</active>
+				<title>EBANX (Boleto Bancário, HSBC, Itaú, Bradesco, Banco do Brasil, Visa, Mastercard)</title>
+				<payment_action>sale</payment_action>
+				<allowspecific>0</allowspecific>
+				<testing>1</testing>
+				<payment_type_code>_all</payment_type_code>
+				<open_order_status>processing</open_order_status>
+				<new_order_status>pending</new_order_status>
+				<paid_order_status>complete</paid_order_status>
+				<canceled_order_status>canceled</canceled_order_status>
+        <active_installments>0</active_installments>
+        <maximum_installments>6</maximum_installments>
+				<interest_installments>0.0</interest_installments>
+				<title_checkout>EBANX (Boleto Bancário, Itaú, Bradesco, Banco do Brasil)</title_checkout>
+        <activationstatus>0</activationstatus>
+			</ebanx>
+		</payment>
+	</default>
+</config>
