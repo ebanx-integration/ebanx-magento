@@ -1,12 +1,6 @@
 <?php
 
-require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
-
-$ebanxConfig = Mage::getStoreConfig('payment/ebanx');
-\Ebanx\Config::set(array(
-    'integrationKey' => $ebanxConfig['integration_key']
-  , 'testMode'       => (intval($ebanxConfig['testing']) == 1)
-));
+require_once dirname(dirname(__FILE__)) . '/etc/bootstrap.php';
 
 class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 {
@@ -54,9 +48,9 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
         }
         else
         {
-            $msg = '(' . $response['hasErrors'] . ') ' . $response['errorMessage'];
+            $msg = $response->status_message;
             Mage::log("BeginPayment failed with [$msg]");
-            $sessionCheckout->addError('An unrecoverable error occured while processing your payment information. ' . $msg);
+            $session->addError('An unrecoverable error occured while processing your payment information. ' . $msg);
             Mage::throwException($msg);
         }
     }
