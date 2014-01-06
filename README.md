@@ -16,8 +16,7 @@ It includes support to installments and custom interest rates.
 git clone --recursive https://github.com/ebanx/ebanx-magento.git
 ```
 2. If you have cache enabled, you'll need to flush it at **System > Cache Management**.
-2. Visit your Magento payment settings at **System > Configuration > Payment Methods > EBANX**.
-3. Click the _Install_ link, and wait for the extension installation to complete.
+3. Visit your Magento payment settings at **System > Configuration > Payment Methods > EBANX**.
 4. Add the integration key you were given by the EBANX integration team. You will need to use different keys in test and production modes.
 5. Change the other settings if needed.
 6. Go to the EBANX Merchant Area, then to **Integration > Merchant Options**.
