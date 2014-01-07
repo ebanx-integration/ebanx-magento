@@ -34,4 +34,5 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
-_1.0.0_: first release
+1.0.1: added Ebanx_Ebanx_Helper_Data because Magento 1.6 requires it
+1.0.0: first release
