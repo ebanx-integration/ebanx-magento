@@ -42,8 +42,8 @@
 <?php endif; ?>
 
     <script>
-        var ebanxRadio = document.getElementById('p_method_ebanx')
-          , ebanxInstallments = document.getElementById('ebanx_installments')
+        var ebanxRadio         = document.getElementById('p_method_ebanx')
+          , ebanxInstallments  = document.getElementById('ebanx_installments')
           , installmentsNumber = document.getElementById('ebanx_installments_number')
           , installmentsCard   = document.getElementById('ebanx_installments_card');
 
@@ -84,6 +84,8 @@
 
         toggleInstallmentsCards();
         setTimeout(toggleInstallmentsCards, 1000);
+
+        toggleInstallments();
     </script>
 
 <?php
