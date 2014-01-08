@@ -72,18 +72,33 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
         $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
 
         $installmentsActive = $ebanxConfig['active_installments'];
-        $maxInstallments    = $ebanxConfig['maximum_installments'];
+        $maxInstallments    = intval($ebanxConfig['maximum_installments']);
 
         // Get the final value with interest
         $priceInterest = ($this->getFinalValue() * (100 + floatval($ebanxConfig['interest_installments']))) / 100.0;
 
         // Enforces minimum installment value (R$20)
-        $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
-        $totalReal    = ($currencyCode == 'BRL') ? $priceInterest : $priceInterest * 2.5;
-        $installmentsNumber = $totalReal / 20;
-        if ($installmentsNumber < intval($maxInstallments))
+        $currencyCode =  strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode());
+
+        // Convert the total to BRL (approximation)
+        $total = $this->getFinalValue();
+        switch ($currencyCode)
         {
-            $maxInstallments = $installmentsNumber;
+          case 'USD':
+            $totalReal = $total * 2.5;
+            break;
+          case 'EUR':
+            $totalReal = $total * 3.4;
+            break;
+          case 'BRL':
+          default:
+            $totalReal = $total;
+            break;
+        }
+
+        if (($totalReal / 20) < $maxInstallments)
+        {
+          $maxInstallments = floor($totalReal / 20);
         }
 
         $installmentCards = array('Visa', 'Mastercard');

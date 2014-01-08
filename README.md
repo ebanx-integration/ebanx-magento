@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.0.4: included EUR conversion in minimum installment value
 * 1.0.3: show installments in checkout when EBANX is selected by default.
 * 1.0.2: enforced minimum installment value (R$20,00).
 * 1.0.1: added Ebanx_Ebanx_Helper_Data because Magento 1.6 requires it.
