@@ -54,6 +54,8 @@ class Ebanx_Ebanx_Model_Observer
 
         $ebanx = Mage::app()->getRequest()->getParam('ebanx');
 
+        $session->setData('ebanxBaseGrandTotal', $order->getBaseGrandTotal());
+
         // Setup installments and update the total with the interest rate
         $installmentsNumber = 1;
         $installmentsCard   = null;
@@ -67,9 +69,8 @@ class Ebanx_Ebanx_Model_Observer
             if (intval($installmentsNumber) > 1)
             {
                 $interestRate = Mage::getStoreConfig('payment/ebanx/interest_installments');
-                $grandTotal = ($order->getGrandTotal() * (100 + floatval($interestRate))) / 100.0;
-                $order->setGrandTotal($grandTotal)
-                      ->save();
+                $grandTotal = ($order->getBaseGrandTotal() * (100 + floatval($interestRate))) / 100.0;
+                $session->setData('ebanxBaseGrandTotal', $grandTotal);
             }
         }
 

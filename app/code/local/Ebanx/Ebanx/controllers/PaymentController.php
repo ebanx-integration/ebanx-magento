@@ -47,7 +47,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
             'name'              => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname()
           , 'email'             => $order->getCustomerEmail()
           , 'currency_code'     => $order->getBaseCurrencyCode()
-          , 'amount'            => $order->getBaseGrandTotal()
+          , 'amount'            => $session['ebanxBaseGrandTotal']
           , 'payment_type_code' => '_all'
           , 'merchant_payment_code' => $session['apiOrderIncrementId']
           , 'zipcode'           => $order->getBillingAddress()->getPostcode()
