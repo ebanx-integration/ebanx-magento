@@ -78,6 +78,43 @@ class Ebanx_Ebanx_Model_Observer
         $session->setData('ebanxInstallmentsNumber', $installmentsNumber);
         $session->setData('ebanxInstallmentsCard', $installmentsCard);
 
+        // Save direct checkout data
+        $this->_saveDirectCheckoutData($session);
+
         return $this;
+    }
+
+    /**
+     * Save the direct checkout data to the session
+     * @param  Object $session The Checkout Session
+     * @return void
+     */
+    protected function _saveDirectCheckoutData($session)
+    {
+        $ebanx       = Mage::app()->getRequest()->getParam('ebanx');
+        $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
+
+        if (intval($ebanxConfig['direct']) == 1)
+        {
+            $birthDate = str_pad($ebanx['birth_day'],   2, '0', STR_PAD_LEFT) . '/'
+                       . str_pad($ebanx['birth_month'], 2, '0', STR_PAD_LEFT) . '/'
+                       . $ebanx['birth_year'];
+
+            $session->setData('ebanxCpf',    $ebanx['cpf']);
+            $session->setData('ebanxBirth',  $birthDate);
+            $session->setData('ebanxMethod', $ebanx['method']);
+
+            if ($ebanx['method'] == 'creditcard')
+            {
+                $ccExpiration = str_pad($ebanx['cc_expiration_month'], 2, '0', STR_PAD_LEFT) . '/'
+                              . $ebanx['cc_expiration_year'];
+
+                $session->setData('ebanxCCName',       $ebanx['cc_name']);
+                $session->setData('ebanxCCType',       $ebanx['cc_type']);
+                $session->setData('ebanxCCNumber',     $ebanx['cc_number']);
+                $session->setData('ebanxCCCVV',        $ebanx['cc_cvv']);
+                $session->setData('ebanxCCExpiration', $ccExpiration);
+            }
+        }
     }
 }

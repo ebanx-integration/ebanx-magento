@@ -1,0 +1,251 @@
+<style type="text/css">
+#payment_ebanx_direct {
+    display: none;
+}
+.ebanx-birth {
+  width: 350px !important;
+}
+.ebanx-birth .day {
+  width: 60px;
+  margin-right: 10px;
+}
+#payment_ebanx_direct .cvv {
+  width: 30px;
+}
+.ebanx-method .v-fix {
+  margin: 0 20px 0 0;
+  overflow: hidden;
+}
+.ebanx-method .v-fix input {
+  float: left;
+  margin: 2px 5px 0 0;
+}
+.ebanx-method .v-fix label {
+  float: left;
+}
+.ebanx-cc-field {
+  display: none;
+}
+</style>
+
+<ul class="form-list" id="payment_ebanx_direct">
+  <li>
+    <label for="ebanx_cpf" class="required"><em>*</em>CPF</label>
+    <div class="input-box">
+      <input type="text" title="CPF" class="input-text required-entry" id="ebanx_cpf" name="ebanx[cpf]" value="">
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_birth_day" class="required"><em>*</em>Birth Date</label>
+    <div class="input-box ebanx-birth">
+      <div class="v-fix">
+        <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
+          <option value="" selected="selected">Day</option>
+          <?php for ($i = 1; $i <= 31; $i++): ?>
+            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+          <?php endfor ?>
+        </select>
+      </div>
+
+      <div class="v-fix">
+        <select id="ebanx_birth_month" name="ebanx[birth_month]" class="month required-entry" autocomplete="off">
+          <option value="" selected="selected">Month</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+
+      <div class="v-fix">
+        <select id="ebanx_birth_year" name="ebanx[birth_year]" class="year required-entry" autocomplete="off">
+          <option value="" selected="selected">Year</option>
+          <?php for ($i = date('Y') - 16; $i > 1920; $i--): ?>
+            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+          <?php endfor ?>
+        </select>
+      </div>
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_method" class="required"><em>*</em>Payment Method</label>
+    <div class="input-box ebanx-method">
+      <div class="v-fix">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
+        <label for="ebanx_method_boleto">Boleto</label>
+      </div>
+
+      <div class="v-fix">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
+        <label for="ebanx_method_creditcard">Credit Card</label>
+      </div>
+    </div>
+  </li>
+
+  <li class="ebanx-cc-field">
+    <label for="ebanx_cc_name" class="required"><em>*</em>Name on Card</label>
+    <div class="input-box">
+      <input type="text" title="Name on Card" class="input-text required-entry" id="ebanx_cc_name" name="ebanx[cc_name]" value="" autocomplete="off">
+    </div>
+  </li>
+
+  <li class="ebanx-cc-field">
+    <label for="ebanx_cc_type" class="required"><em>*</em>Credit Card Type</label>
+    <div class="input-box">
+      <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
+        <option value="">--Please Select--</option>
+          <option value="Aura">Aura</option>
+          <option value="amex">American Express</option>
+          <option value="diners">Diners</option>
+          <option value="discover">Discover</option>
+          <option value="elo">Elo</option>
+          <option value="mastercard">MasterCard</option>
+          <option value="visa" selected="selected">Visa</option>
+        </select>
+      </div>
+  </li>
+
+  <li class="ebanx-cc-field">
+    <label for="ebanx_cc_number" class="required"><em>*</em>Credit Card Number/CVV</label>
+      <div class="input-box">
+        <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry" value="" autocomplete="off">
+      </div>
+    </div>
+  </li>
+
+  <li class="ebanx-cc-field">
+    <label for="ebanx_cc_cvv" class="required"><em>*</em>Credit Card CVV</label>
+    <div class="input-box">
+      <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text required-entry" value="" autocomplete="off">
+    </div>
+  </li>
+
+  <li class="ebanx-cc-field">
+    <label for="ebanx_cc_expiration_month" class="required"><em>*</em>Expiration Date</label>
+    <div class="input-box">
+      <div class="v-fix">
+        <select id="ebanx_cc_expiration_month" name="ebanx[cc_expiration_month]" class="month required-entry" autocomplete="off">
+          <option value="" selected="selected">Month</option>
+          <option value="1">01 - January</option>
+          <option value="2">02 - February</option>
+          <option value="3">03 - March</option>
+          <option value="4">04 - April</option>
+          <option value="5">05 - May</option>
+          <option value="6">06 - June</option>
+          <option value="7">07 - July</option>
+          <option value="8">08 - August</option>
+          <option value="9">09 - September</option>
+          <option value="10">10 - October</option>
+          <option value="11">11 - November</option>
+          <option value="12">12 - December</option>
+        </select>
+      </div>
+
+      <div class="v-fix">
+        <select id="ebanx_cc_expiration_year" name="ebanx[cc_expiration_year]" class="year required-entry" autocomplete="off">
+          <option value="" selected="selected">Year</option>
+          <?php for ($i = 2014; $i < 2031; $i++): ?>
+            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+          <?php endfor ?>
+        </select>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<script>
+  var ebanxRadio      = document.getElementById('p_method_ebanx')
+    , ebanxDirectForm = document.getElementById('payment_ebanx_direct')
+    , fieldIds = [
+        'ebanx_cpf'
+      , 'ebanx_cc_name'
+      , 'ebanx_cc_type'
+      , 'ebanx_cc_number'
+      , 'ebanx_cc_cvv'
+      , 'ebanx_cc_expiration_month'
+      , 'ebanx_cc_expiration_year'
+      , 'ebanx_birth_day'
+      , 'ebanx_birth_month'
+      , 'ebanx_birth_year'
+      , 'ebanx_method_boleto'
+      , 'ebanx_method_creditcard'
+    ];
+
+  /**
+   * Enable the EBANX direct form fields (they're disabled my Magento)
+   * @return {[type]} [description]
+   */
+  function enableFields() {
+    fieldIds.forEach(function(field) {
+      var elm = document.getElementById(field);
+
+      if (elm) {
+        elm.disabled = false;
+      }
+    });
+  }
+
+  /**
+   * Toggle the direct checkout form when changing the payment method
+   * @return void
+   */
+  function toggleDirectForm() {
+    if (ebanxRadio.checked == true) {
+      ebanxDirectForm.style.display = 'block';
+      enableFields();
+      toggleCCFields()
+    } else {
+      ebanxDirectForm.style.display = 'none';
+    }
+  }
+
+  /**
+   * Toggle credit card fields when changing the EBANX payment method
+   * @return void
+   */
+  function toggleCCFields() {
+    var radio  = document.getElementById('ebanx_method_creditcard')
+      , fields = document.getElementsByClassName('ebanx-cc-field');
+
+    for (i = 0; i < fields.length; i++) {
+      if (radio.checked == true) {
+        fields[i].style.display = 'block';
+      } else {
+        fields[i].style.display = 'none';
+      }
+    }
+
+    enableFields();
+  }
+
+  document.getElementById('ebanx_method_boleto').onclick     = toggleCCFields;
+  document.getElementById('ebanx_method_creditcard').onclick = toggleCCFields;
+
+  setTimeout(toggleDirectForm, 1000);
+  toggleDirectForm();
+
+  /**
+   * Toggle the direct checkout form on the click event
+   */
+  var paymentMethods = document.getElementsByName('payment[method]');
+    for (var i = 0; i < paymentMethods.length; i++) {
+        var defaultEvent = paymentMethods[i].onchange;
+        paymentMethods[i].onchange = function() {
+            toggleDirectForm();
+
+            if (defaultEvent) {
+                defaultEvent();
+            }
+        }
+    }
+</script>

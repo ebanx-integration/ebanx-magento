@@ -77,6 +77,7 @@
 				<payment_action>sale</payment_action>
 				<allowspecific>0</allowspecific>
 				<testing>1</testing>
+        <direct>0</direct>
 				<payment_type_code>_all</payment_type_code>
 				<open_order_status>processing</open_order_status>
 				<new_order_status>pending</new_order_status>

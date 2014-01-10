@@ -36,4 +36,5 @@ $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
 \Ebanx\Config::set(array(
     'integrationKey' => $ebanxConfig['integration_key']
   , 'testMode'       => (intval($ebanxConfig['testing']) == 1)
+  , 'directMode'     => (intval($ebanxConfig['direct'])  == 1)
 ));

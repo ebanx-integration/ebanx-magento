@@ -48,7 +48,20 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
      */
     protected function _beforeToHtml()
     {
+        $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
+
+        // Check if we're going to render the checkout or the direct form
+        if (intval($ebanxConfig['direct']) == 1)
+        {
+            $this->setTemplate('ebanx/ebanx/direct.phtml');
+        }
+        else
+        {
+            $this->setTemplate('ebanx/ebanx/checkout.phtml');
+        }
+
         $this->_prepareForm();
+
         return parent::_beforeToHtml();
     }
 
@@ -117,5 +130,4 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
          , 'currency_symbol'     => $currencySymbol
         ));
     }
-
 }
