@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.0.6: fixed wrong totals when using many shipping methods
 * 1.0.5: fixed wrong checkout total and currency code
 * 1.0.4: included EUR conversion in minimum installment value
 * 1.0.3: show installments in checkout when EBANX is selected by default.

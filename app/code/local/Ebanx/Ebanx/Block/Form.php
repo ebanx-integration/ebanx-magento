@@ -58,9 +58,10 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
      */
     public function getFinalValue()
     {
-        $quote = Mage::getModel('checkout/session')->getQuote();
-        $totals = $quote->getTotals();
-        return $totals['grand_total']->_data['value'];
+        return Mage::getSingleton('checkout/cart')
+                ->getQuote()
+                ->collectTotals()
+                ->getGrandTotal();
     }
 
     /**
