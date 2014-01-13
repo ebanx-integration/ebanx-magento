@@ -167,7 +167,6 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
             // Redirect back to cart
             $this->getResponse()
                  ->setRedirect(Mage::getUrl('checkout/cart'));
-            //Mage::throwException($msg);
         }
     }
 

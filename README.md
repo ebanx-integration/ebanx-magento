@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.1.0: implemented direct checkout (full mode)
 * 1.0.7: fixed wrong installment values when using multiple currencies
 * 1.0.6: fixed wrong totals when using many shipping methods
 * 1.0.5: fixed wrong checkout total and currency code
