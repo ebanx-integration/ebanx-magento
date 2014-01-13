@@ -65,6 +65,14 @@
         </args>
       </ebanx>
     </routers>
+
+    <layout>
+      <updates>
+        <ebanx>
+          <file>ebanx.xml</file>
+        </ebanx>
+      </updates>
+    </layout>
   </frontend>
 
 	<default>

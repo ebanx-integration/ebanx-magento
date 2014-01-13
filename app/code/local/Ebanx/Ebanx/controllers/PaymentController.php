@@ -154,7 +154,20 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
             $msg = $response->status_message;
             Mage::log("BeginPayment failed with [$msg]");
             $session->addError('An unrecoverable error occured while processing your payment information. ' . $msg);
-            Mage::throwException($msg);
+
+            // Recover the cart
+            $quote = Mage::getModel('sales/quote')->load($order->getQuoteId());
+            $quote->setIsActive(true)
+                  ->save();
+
+            // Cancel the order
+            $order->setStatus($this->_getOrderStatus('CA'))
+                  ->save();
+
+            // Redirect back to cart
+            $this->getResponse()
+                 ->setRedirect(Mage::getUrl('checkout/cart'));
+            //Mage::throwException($msg);
         }
     }
 
@@ -240,17 +253,30 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
         // Shows the boleto print page
         if ($session['ebanxMethod'] == 'boleto')
         {
-            $hash = $this->getRequest()->getParam('hash');
-            $response = \Ebanx\Ebanx::doPrintHtml(array('hash' => $hash));
+            $hash     = $this->getRequest()->getParam('hash');
+            $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
 
-            var_dump($response);
-            die('sucesso!');
+            // Render the success page - inherits the default success page
+            $incrementId = $response->payment->merchant_payment_code;
+            $order = Mage::getModel('sales/order')->load($incrementId, 'increment_id');
+
+            $this->loadLayout();
+            $this->getLayout()
+                 ->getBlock('content')
+                 ->setTemplate('ebanx/payment/success.phtml');
+
+            // hacks!
+            $_SESSION['boletoUrl'] = $response->payment->boleto_url;
+
+            $session->clear();
+            Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($order->getId())));
+            $this->loadLayout()->renderLayout();
         }
         // If it was a credit card payment redirects to the success page
         else
         {
             $this->getResponse()
-                 ->setRedirect(Mage::getUrl('checkout/onepage/success.phtml'));
+                 ->setRedirect(Mage::getUrl('checkout/onepage/success'));
         }
     }
 }
