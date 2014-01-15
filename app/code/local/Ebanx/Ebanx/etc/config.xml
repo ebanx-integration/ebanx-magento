@@ -13,8 +13,12 @@
 					<module>Ebanx_Ebanx</module>
 					<class>Mage_Sales_Model_Mysql4_Setup</class>
 				</setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
 			</ebanx_setup>
 		</resources>
+
 
 		<models>
 			<ebanx>

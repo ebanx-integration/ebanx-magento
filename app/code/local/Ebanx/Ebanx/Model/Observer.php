@@ -115,6 +115,12 @@ class Ebanx_Ebanx_Model_Observer
                 $session->setData('ebanxCCCVV',        $ebanx['cc_cvv']);
                 $session->setData('ebanxCCExpiration', $ccExpiration);
             }
+
+            // Save CPF and birthdate
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
+            $customer->setEbanxCpf($ebanx['cpf']);
+            $customer->setEbanxBirthdate($birthDate);
+            $customer->save();
         }
     }
 }

@@ -47,7 +47,7 @@
   <li>
     <label for="ebanx_cpf" class="required"><em>*</em>CPF</label>
     <div class="input-box">
-      <input type="text" title="CPF" class="input-text required-entry validate-cpf" id="ebanx_cpf" name="ebanx[cpf]" value="">
+      <input type="text" title="CPF" class="input-text required-entry validate-cpf" id="ebanx_cpf" name="ebanx[cpf]" value="<?php echo $this->getCpf() ?>">
     </div>
   </li>
 
@@ -56,36 +56,27 @@
     <div class="input-box ebanx-birth">
       <div class="v-fix">
         <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
-          <option value="" selected="selected">Day</option>
+          <option value="" <?php if (0 == $this->getBirthDay()) echo 'selected="selected"' ?>>Day</option>
           <?php for ($i = 1; $i <= 31; $i++): ?>
-            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $i ?></option>
           <?php endfor ?>
         </select>
       </div>
 
       <div class="v-fix">
         <select id="ebanx_birth_month" name="ebanx[birth_month]" class="month required-entry" autocomplete="off">
-          <option value="" selected="selected">Month</option>
-          <option value="1">January</option>
-          <option value="2">February</option>
-          <option value="3">March</option>
-          <option value="4">April</option>
-          <option value="5">May</option>
-          <option value="6">June</option>
-          <option value="7">July</option>
-          <option value="8">August</option>
-          <option value="9">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
+          <option value="" <?php if (0 == $this->getBirthMonth()) echo 'selected="selected"' ?>>Month</option>
+          <?php for ($i = 1; $i <= 12; $i++): ?>
+            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo date("F", mktime(0, 0, 0, $i, 10)) ?></option>
+          <?php endfor ?>
         </select>
       </div>
 
       <div class="v-fix">
         <select id="ebanx_birth_year" name="ebanx[birth_year]" class="year required-entry" autocomplete="off">
-          <option value="" selected="selected">Year</option>
+          <option value="" <?php if (0 == $this->getBirthYear()) echo 'selected="selected"' ?>>Year</option>
           <?php for ($i = date('Y') - 16; $i > 1920; $i--): ?>
-            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $i ?></option>
           <?php endfor ?>
         </select>
       </div>

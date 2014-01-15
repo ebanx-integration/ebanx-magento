@@ -121,6 +121,22 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
                                      ->currency(Mage::app()->getStore()->getCurrentCurrencyCode())
                                      ->getSymbol();
 
+        $customer  = Mage::getSingleton('customer/session')->getCustomer();
+        $cpf       = $customer->getEbanxCpf();
+
+        $birthDate = $customer->getEbanxBirthdate();
+        $birthDay   = 0;
+        $birthMonth = 0;
+        $birthYear  = 0;
+
+        if (isset($birthDate))
+        {
+            $birthDate = explode('/', $birthDate);
+            $birthDay   = $birthDate[0];
+            $birthMonth = $birthDate[1];
+            $birthYear  = $birthDate[2];
+        }
+
         $this->addData(array(
            'installments_active' => $installmentsActive
          , 'max_installments'    => $maxInstallments
@@ -128,6 +144,10 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
          , 'price_upfront'       => $this->getFinalValue()
          , 'price_interest'      => $priceInterest
          , 'currency_symbol'     => $currencySymbol
+         , 'cpf'                 => $cpf
+         , 'birth_day'           => $birthDay
+         , 'birth_month'         => $birthMonth
+         , 'birth_year'          => $birthYear
         ));
     }
 }
