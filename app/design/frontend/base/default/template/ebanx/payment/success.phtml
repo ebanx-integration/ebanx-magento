@@ -59,7 +59,9 @@
 </ul>
 <?php endif;?>
 
-<button type="button" class="button" title="<?php echo $this->__('Imprimir boleto') ?>" onclick="window.open('<?php echo $_SESSION['boletoUrl'] ?>')"><span><span><?php echo $this->__('Imprimir boleto') ?></span></span></button>
+<a href="<?php echo $_SESSION['boletoUrl'] ?>" target="_blank">
+    <img src="<?php echo $this->getSkinUrl('images/ebanx-print-boleto.png') ?>" width="177" height="37" />
+</a>
 
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>

@@ -12,27 +12,42 @@
 #payment_ebanx_direct .cvv {
   width: 30px;
 }
-.ebanx-method .v-fix {
-  margin: 0 20px 0 0;
-  overflow: hidden;
-}
-.ebanx-method .v-fix input {
-  float: left;
-  margin: 2px 5px 0 0;
-}
-.ebanx-method .v-fix label {
-  float: left;
-}
 .ebanx-cc-field {
   display: none;
 }
+.ebanx-method {
+  overflow: hidden;
+  width: 600px !important;
+}
+.ebanx-method .payment-method {
+  float: left;
+  display: block;
+  overflow: hidden;
+  width: 290px;
+  margin: 10px 0 0 0;
+}
+.ebanx-method .payment-method input {
+  float: left;
+  clear: left;
+  /*margin: 27px 3px 0 0;*/
+  display: none;
+}
+.ebanx-method .payment-method label {
+  cursor: pointer;
+  opacity: 0.6;
+}
+.ebanx-method .payment-method.active label,
+.ebanx-method .payment-method label:hover {
+  opacity: 1;
+}
+.ebanx-method .payment-method label img {}
 </style>
 
 <ul class="form-list" id="payment_ebanx_direct">
   <li>
     <label for="ebanx_cpf" class="required"><em>*</em>CPF</label>
     <div class="input-box">
-      <input type="text" title="CPF" class="input-text required-entry" id="ebanx_cpf" name="ebanx[cpf]" value="">
+      <input type="text" title="CPF" class="input-text required-entry validate-cpf" id="ebanx_cpf" name="ebanx[cpf]" value="">
     </div>
   </li>
 
@@ -78,16 +93,20 @@
   </li>
 
   <li>
-    <label for="ebanx_method" class="required"><em>*</em>Payment Method</label>
+    <label for="payment-method" class="required"><em>*</em>Payment Method</label>
     <div class="input-box ebanx-method">
-      <div class="v-fix">
-        <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
-        <label for="ebanx_method_boleto">Boleto</label>
+      <div class="payment-method payment-method-toggle">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
+        <label for="ebanx_method_creditcard">
+          <img src="<?php echo $this->getSkinUrl('images/ebanx-creditcards.png') ?>" width="264" height="63" />
+        </label>
       </div>
 
-      <div class="v-fix">
-        <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
-        <label for="ebanx_method_creditcard">Credit Card</label>
+      <div class="payment-method active payment-method-toggle">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
+        <label for="ebanx_method_boleto">
+          <img src="<?php echo $this->getSkinUrl('images/ebanx-boleto.png') ?>" width="264" height="63" />
+        </label>
       </div>
     </div>
   </li>
@@ -116,9 +135,9 @@
   </li>
 
   <li class="ebanx-cc-field">
-    <label for="ebanx_cc_number" class="required"><em>*</em>Credit Card Number</label>
+    <label for="ebanx_cc_number" class="required "><em>*</em>Credit Card Number</label>
       <div class="input-box">
-        <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry" value="" autocomplete="off">
+        <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
       </div>
     </div>
   </li>
@@ -126,7 +145,7 @@
   <li class="ebanx-cc-field">
     <label for="ebanx_cc_cvv" class="required"><em>*</em>Credit Card CVV</label>
     <div class="input-box">
-      <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text required-entry" value="" autocomplete="off">
+      <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text validate-length minimum-length-3 maximum-length-4" value="" autocomplete="off">
     </div>
   </li>
 
@@ -161,6 +180,23 @@
       </div>
     </div>
   </li>
+
+  <?php if ($this->getMaxInstallments() > 1): ?>
+  <li class="ebanx-cc-field" id="ebanx_installments">
+    <label for="ebanx_cc_installments" class="required"><em>*</em>Installments</label>
+
+    <div class="input-box">
+      <div class="v-fix">
+        <select id="ebanx_cc_installments" name="ebanx[installments]">
+          <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?></option>
+          <?php for ($i = 2; $i <= $this->getMaxInstallments(); $i++): ?>
+            <option value="<?= $i ?>"><?= $i ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceInterest() / floatval($i)) ?></option>
+          <?php endfor; ?>
+        </select>
+      </div>
+    </div>
+  </li>
+  <?php endif ?>
 </ul>
 
 <script>
@@ -179,6 +215,7 @@
       , 'ebanx_birth_year'
       , 'ebanx_method_boleto'
       , 'ebanx_method_creditcard'
+      , 'ebanx_cc_installments'
     ];
 
   /**
@@ -203,7 +240,7 @@
     if (ebanxRadio.checked == true) {
       ebanxDirectForm.style.display = 'block';
       enableFields();
-      toggleCCFields()
+      toggleCCFields();
     } else {
       ebanxDirectForm.style.display = 'none';
     }
@@ -248,4 +285,61 @@
             }
         }
     }
+
+  /**
+   * Toggle the active payment method class
+   */
+  var setActivePaymentMethod = function() {
+    var methods = document.getElementsByClassName('payment-method-toggle');
+    var clickEvent = function() {
+      for (var i = 0; i < methods.length; i++) {
+        methods[i].className = methods[i].className.replace(/active/g, '');
+      }
+
+      this.className += ' active';
+    };
+
+    for (var i = 0; i < methods.length; i++) {
+      methods[i].onclick = clickEvent;
+    }
+  }();
+
+  /**
+   * Hide installments if the selected card is Discover
+   */
+  document.getElementById('ebanx_cc_type').onchange = function() {
+    var installments = document.getElementById('ebanx_installments');
+
+    if (this.value == 'discover') {
+      installments.style.display = 'none';
+    } else {
+      installments.style.display = 'block';
+    }
+  };
+
+  /**
+   * Validates the CPF number
+   *
+   */
+  function validateCpf(cpf) {
+    var digits = cpf.replace(/[\D]/g, '')
+      , dv1, dv2, sum, mod;
+
+    if (digits.length == 11) {
+      d = digits.split('');
+
+      sum = d[0] * 10 + d[1] * 9 + d[2] * 8 + d[3] * 7 + d[4] * 6 + d[5] * 5 + d[6] * 4 + d[7] * 3 + d[8] * 2;
+      mod = sum % 11;
+      dv1 = (11 - mod < 10 ? 11 - mod : 0);
+
+      sum = d[0] * 11 + d[1] * 10 + d[2] * 9 + d[3] * 8 + d[4] * 7 + d[5] * 6 + d[6] * 5 + d[7] * 4 + d[8] * 3 + dv1 * 2;
+      mod = sum % 11;
+      dv2 = (11 - mod < 10 ? 11 - mod : 0);
+
+      return dv1 == d[9] && dv2 == d[10];
+    }
+
+    return false;
+  }
+  Validation.add('validate-cpf', 'O CPF informado é inválido.', function(cpf) { return validateCpf(cpf); });
 </script>

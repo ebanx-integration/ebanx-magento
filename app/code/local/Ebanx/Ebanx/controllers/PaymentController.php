@@ -111,7 +111,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
               , 'email'             => $order->getCustomerEmail()
               , 'phone_number'      => $order->getBillingAddress()->getTelephone()
               , 'currency_code'     => $order->getBaseCurrencyCode()
-              , 'amount_total'      => $session['ebanxBaseGrandTotal']
+              , 'amount_total'      => $order->getBaseGrandTotal()
               , 'payment_type_code' => $session['ebanxMethod']
               , 'merchant_payment_code' => $session['apiOrderIncrementId']
               , 'zipcode'           => $order->getBillingAddress()->getPostcode()
@@ -123,6 +123,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
           )
         );
 
+        // Add credit card fields if the method is credit card
         if ($session['ebanxMethod'] == 'creditcard')
         {
             $params['payment']['payment_type_code'] = $session['ebanxCCType'];
@@ -132,6 +133,13 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
               , 'card_cvv'      => $session['ebanxCCCVV']
               , 'card_due_date' => $session['ebanxCCExpiration']
             );
+        }
+
+        // Add installments to order - except to Discover payments
+        if (intval($session['ebanxInstallmentsNumber']) > 1 && $session['ebanxInstallmentsCard'] != 'discover')
+        {
+            $params['payment']['instalments']  = $session['ebanxInstallmentsNumber'];
+            $params['payment']['amount_total'] = $session['ebanxBaseGrandTotal'];
         }
 
         $response = \Ebanx\Ebanx::doRequest($params);
@@ -265,7 +273,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                  ->setTemplate('ebanx/payment/success.phtml');
 
             // hacks!
-            $_SESSION['boletoUrl'] = $response->payment->boleto_url;
+            $_SESSION['boletoUrl']    = $response->payment->boleto_url;
 
             $session->clear();
             Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($order->getId())));
