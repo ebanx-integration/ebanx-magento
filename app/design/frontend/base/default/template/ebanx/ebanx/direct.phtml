@@ -86,12 +86,14 @@
   <li>
     <label for="payment-method" class="required"><em>*</em>Payment Method</label>
     <div class="input-box ebanx-method">
+      <?php if ($this->getDirectCards()): ?>
       <div class="payment-method payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
         <label for="ebanx_method_creditcard">
           <img src="<?php echo $this->getSkinUrl('images/ebanx-creditcards.png') ?>" width="264" height="63" />
         </label>
       </div>
+      <? endif ?>
 
       <div class="payment-method active payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
@@ -102,75 +104,77 @@
     </div>
   </li>
 
-  <li class="ebanx-cc-field">
-    <label for="ebanx_cc_name" class="required"><em>*</em>Name on Card</label>
-    <div class="input-box">
-      <input type="text" title="Name on Card" class="input-text required-entry" id="ebanx_cc_name" name="ebanx[cc_name]" value="" autocomplete="off">
-    </div>
-  </li>
-
-  <li class="ebanx-cc-field">
-    <label for="ebanx_cc_number" class="required "><em>*</em>Credit Card Number</label>
+  <?php if ($this->getDirectCards()): ?>
+    <li class="ebanx-cc-field">
+      <label for="ebanx_cc_name" class="required"><em>*</em>Name on Card</label>
       <div class="input-box">
-        <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-cc-ebanx validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
+        <input type="text" title="Name on Card" class="input-text required-entry" id="ebanx_cc_name" name="ebanx[cc_name]" value="" autocomplete="off">
       </div>
-    </div>
-  </li>
+    </li>
 
-  <li class="ebanx-cc-field">
-    <label for="ebanx_cc_cvv" class="required"><em>*</em>Credit Card CVV</label>
-    <div class="input-box">
-      <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text validate-length minimum-length-3 maximum-length-4" value="" autocomplete="off">
-    </div>
-  </li>
-
-  <li class="ebanx-cc-field">
-    <label for="ebanx_cc_type" class="required"><em>*</em>Credit Card Type</label>
-    <div class="input-box">
-      <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
-        <option value="" selected="selected">--Please Select--</option>
-          <option value="aura">Aura</option>
-          <option value="amex">American Express</option>
-          <option value="diners">Diners</option>
-          <option value="discover">Discover</option>
-          <option value="elo">Elo</option>
-          <option value="mastercard">MasterCard</option>
-          <option value="visa">Visa</option>
-        </select>
+    <li class="ebanx-cc-field">
+      <label for="ebanx_cc_number" class="required "><em>*</em>Credit Card Number</label>
+        <div class="input-box">
+          <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-cc-ebanx validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
+        </div>
       </div>
-  </li>
+    </li>
 
-  <li class="ebanx-cc-field">
-    <label for="ebanx_cc_expiration_month" class="required"><em>*</em>Expiration Date</label>
-    <div class="input-box">
-      <div class="v-fix">
-        <select id="ebanx_cc_expiration_month" name="ebanx[cc_expiration_month]" class="month required-entry" autocomplete="off">
-          <option value="" selected="selected">Month</option>
-          <option value="1">01 - January</option>
-          <option value="2">02 - February</option>
-          <option value="3">03 - March</option>
-          <option value="4">04 - April</option>
-          <option value="5">05 - May</option>
-          <option value="6">06 - June</option>
-          <option value="7">07 - July</option>
-          <option value="8">08 - August</option>
-          <option value="9">09 - September</option>
-          <option value="10">10 - October</option>
-          <option value="11">11 - November</option>
-          <option value="12">12 - December</option>
-        </select>
+    <li class="ebanx-cc-field">
+      <label for="ebanx_cc_cvv" class="required"><em>*</em>Credit Card CVV</label>
+      <div class="input-box">
+        <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text validate-length minimum-length-3 maximum-length-4" value="" autocomplete="off">
       </div>
+    </li>
 
-      <div class="v-fix">
-        <select id="ebanx_cc_expiration_year" name="ebanx[cc_expiration_year]" class="year required-entry" autocomplete="off">
-          <option value="" selected="selected">Year</option>
-          <?php for ($i = date('Y'); $i <= date('Y') + 20; $i++): ?>
-            <option value="<?php echo $i ?>"><?php echo $i ?></option>
-          <?php endfor ?>
-        </select>
+    <li class="ebanx-cc-field">
+      <label for="ebanx_cc_type" class="required"><em>*</em>Credit Card Type</label>
+      <div class="input-box">
+        <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
+          <option value="" selected="selected">--Please Select--</option>
+            <option value="aura">Aura</option>
+            <option value="amex">American Express</option>
+            <option value="diners">Diners</option>
+            <option value="discover">Discover</option>
+            <option value="elo">Elo</option>
+            <option value="mastercard">MasterCard</option>
+            <option value="visa">Visa</option>
+          </select>
+        </div>
+    </li>
+
+    <li class="ebanx-cc-field">
+      <label for="ebanx_cc_expiration_month" class="required"><em>*</em>Expiration Date</label>
+      <div class="input-box">
+        <div class="v-fix">
+          <select id="ebanx_cc_expiration_month" name="ebanx[cc_expiration_month]" class="month required-entry" autocomplete="off">
+            <option value="" selected="selected">Month</option>
+            <option value="1">01 - January</option>
+            <option value="2">02 - February</option>
+            <option value="3">03 - March</option>
+            <option value="4">04 - April</option>
+            <option value="5">05 - May</option>
+            <option value="6">06 - June</option>
+            <option value="7">07 - July</option>
+            <option value="8">08 - August</option>
+            <option value="9">09 - September</option>
+            <option value="10">10 - October</option>
+            <option value="11">11 - November</option>
+            <option value="12">12 - December</option>
+          </select>
+        </div>
+
+        <div class="v-fix">
+          <select id="ebanx_cc_expiration_year" name="ebanx[cc_expiration_year]" class="year required-entry" autocomplete="off">
+            <option value="" selected="selected">Year</option>
+            <?php for ($i = date('Y'); $i <= date('Y') + 20; $i++): ?>
+              <option value="<?php echo $i ?>"><?php echo $i ?></option>
+            <?php endfor ?>
+          </select>
+        </div>
       </div>
-    </div>
-  </li>
+    </li>
+  <?php endif ?>
 
   <?php if ($this->getMaxInstallments() > 1): ?>
   <li class="ebanx-cc-field" id="ebanx_installments">
@@ -245,19 +249,27 @@
     var radio  = document.getElementById('ebanx_method_creditcard')
       , fields = document.getElementsByClassName('ebanx-cc-field');
 
-    for (i = 0; i < fields.length; i++) {
-      if (radio.checked == true) {
-        fields[i].style.display = 'block';
-      } else {
-        fields[i].style.display = 'none';
+    if (radio) {
+      for (i = 0; i < fields.length; i++) {
+        if (radio.checked == true) {
+          fields[i].style.display = 'block';
+        } else {
+          fields[i].style.display = 'none';
+        }
       }
     }
 
     enableFields();
   }
 
-  document.getElementById('ebanx_method_boleto').onclick     = toggleCCFields;
-  document.getElementById('ebanx_method_creditcard').onclick = toggleCCFields;
+  // Toggle the CC fields on method change
+  var methodBoleto = document.getElementById('ebanx_method_boleto')
+    , methodCC     = document.getElementById('ebanx_method_creditcard');
+
+  if (methodCC && methodBoleto) {
+    methodCC.onclick     = toggleCCFields;
+    methodBoleto.onclick = toggleCCFields;
+  }
 
   setTimeout(toggleDirectForm, 1000);
   toggleDirectForm();
@@ -309,7 +321,8 @@
     }
   };
 
-  document.getElementById('ebanx_cc_type').onchange = enableInstallments;
+  var methodCCType = document.getElementById('ebanx_cc_type');
+  if (methodCCType) methodCCType.onchange = enableInstallments;
 
   /**
    * Validates the CPF number
@@ -370,7 +383,9 @@
     enableInstallments();
   }
   var ccNumber = document.getElementById('ebanx_cc_number');
-  ccNumber.onkeydown = updateCCIssuer;
-  ccNumber.onchange  = updateCCIssuer;
-  ccNumber.oninput   = updateCCIssuer;
+  if (ccNumber) {
+    ccNumber.onkeydown = updateCCIssuer;
+    ccNumber.onchange  = updateCCIssuer;
+    ccNumber.oninput   = updateCCIssuer;
+  }
 </script>
