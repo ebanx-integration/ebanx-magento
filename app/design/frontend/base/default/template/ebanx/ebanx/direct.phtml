@@ -110,25 +110,9 @@
   </li>
 
   <li class="ebanx-cc-field">
-    <label for="ebanx_cc_type" class="required"><em>*</em>Credit Card Type</label>
-    <div class="input-box">
-      <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
-        <option value="">--Please Select--</option>
-          <option value="Aura">Aura</option>
-          <option value="amex">American Express</option>
-          <option value="diners">Diners</option>
-          <option value="discover">Discover</option>
-          <option value="elo">Elo</option>
-          <option value="mastercard">MasterCard</option>
-          <option value="visa" selected="selected">Visa</option>
-        </select>
-      </div>
-  </li>
-
-  <li class="ebanx-cc-field">
     <label for="ebanx_cc_number" class="required "><em>*</em>Credit Card Number</label>
       <div class="input-box">
-        <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
+        <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-cc-ebanx validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
       </div>
     </div>
   </li>
@@ -138,6 +122,22 @@
     <div class="input-box">
       <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text validate-length minimum-length-3 maximum-length-4" value="" autocomplete="off">
     </div>
+  </li>
+
+  <li class="ebanx-cc-field">
+    <label for="ebanx_cc_type" class="required"><em>*</em>Credit Card Type</label>
+    <div class="input-box">
+      <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
+        <option value="" selected="selected">--Please Select--</option>
+          <option value="aura">Aura</option>
+          <option value="amex">American Express</option>
+          <option value="diners">Diners</option>
+          <option value="discover">Discover</option>
+          <option value="elo">Elo</option>
+          <option value="mastercard">MasterCard</option>
+          <option value="visa">Visa</option>
+        </select>
+      </div>
   </li>
 
   <li class="ebanx-cc-field">
@@ -164,7 +164,7 @@
       <div class="v-fix">
         <select id="ebanx_cc_expiration_year" name="ebanx[cc_expiration_year]" class="year required-entry" autocomplete="off">
           <option value="" selected="selected">Year</option>
-          <?php for ($i = 2014; $i < 2031; $i++): ?>
+          <?php for ($i = date('Y'); $i <= date('Y') + 20; $i++): ?>
             <option value="<?php echo $i ?>"><?php echo $i ?></option>
           <?php endfor ?>
         </select>
@@ -298,15 +298,18 @@
   /**
    * Hide installments if the selected card is Discover
    */
-  document.getElementById('ebanx_cc_type').onchange = function() {
-    var installments = document.getElementById('ebanx_installments');
+  function enableInstallments() {
+    var installments = document.getElementById('ebanx_installments')
+      , ccType       = document.getElementById('ebanx_cc_type');
 
-    if (this.value == 'discover') {
+    if (ccType.value == 'discover') {
       installments.style.display = 'none';
     } else {
       installments.style.display = 'block';
     }
   };
+
+  document.getElementById('ebanx_cc_type').onchange = enableInstallments;
 
   /**
    * Validates the CPF number
@@ -333,4 +336,41 @@
     return false;
   }
   Validation.add('validate-cpf', 'O CPF informado é inválido.', function(cpf) { return validateCpf(cpf); });
+
+  /**
+   * Updates the credit card issuer depending on its number
+   */
+  function updateCCIssuer() {
+    var ccNumber = this.value
+      , ccType   = document.getElementById('ebanx_cc_type');
+
+    function toggleType(type) {
+      ccType.value = type;
+    }
+
+    if (ccNumber.match(/^4[0-9]{12}(?:[0-9]{3})?$/)) {
+      toggleType('visa');
+    } else if (ccNumber.match(/^5[1-5][0-9]{14}$/)) {
+      toggleType('mastercard');
+    } else if (ccNumber.match(/^3[47][0-9]{13}$/)) {
+      toggleType('amex');
+    } else if (ccNumber.match(/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/)) {
+      toggleType('diners');
+    } else if (ccNumber.match(/^6(?:011|5[0-9]{2})[0-9]{12}$/)) {
+      toggleType('discover');
+    } else if (ccNumber.match(/^(636368|438935|504175|451416|636297|5067|4576|4011)/)) {
+      toggleType('elo');
+    } else if (ccNumber.match(/^50[0-9]{14,17}$/)) {
+      toggleType('aura');
+    } else {
+      toggleType('');
+    }
+
+    // Enable/disable installments depending on the card
+    enableInstallments();
+  }
+  var ccNumber = document.getElementById('ebanx_cc_number');
+  ccNumber.onkeydown = updateCCIssuer;
+  ccNumber.onchange  = updateCCIssuer;
+  ccNumber.oninput   = updateCCIssuer;
 </script>
