@@ -252,7 +252,10 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
         return $orderStatus[$status];
     }
 
-    //
+    /**
+     * Success action for boleto payments
+     * @return void
+     */
     public function successAction()
     {
         $session = Mage::getSingleton('checkout/session');
@@ -285,5 +288,71 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
             $this->getResponse()
                  ->setRedirect(Mage::getUrl('checkout/onepage/success'));
         }
+    }
+
+    /**
+     * Updates the allowed payment methods in direct mode
+     * @return void
+     */
+    public function updatePaymentsAction()
+    {
+        if (isset($_COOKIE['adminhtml']) && isset($_SESSION['admin']))
+        {
+            $directCards = $this->_testCreditCardPayment();
+
+            Mage::getModel('core/config')
+                ->saveConfig('payment/ebanx/direct_cards', $directCards);
+
+            echo 'Boleto: available.</br>';
+
+            if ($directCards)
+            {
+                echo 'Credit cards: available.</br>';
+            }
+            else
+            {
+                echo 'Credit cards: not available.</br>';
+            }
+
+            echo 'The payment methods for direct method were successfully updated.</br>';
+            echo '<button onclick="window.close()">Close window</button>';
+        }
+        else
+        {
+            $this->_forward('defaultNoRoute');
+        }
+    }
+
+    /**
+     * Tests if the merchant can accept payments by credit card
+     * @return boolean
+     */
+    protected function _testCreditCardPayment()
+    {
+        $paymentData = array(
+          'mode'      => 'full',
+          'operation' => 'request',
+          'payment'   => array(
+            'merchant_payment_code' => time(),
+            'amount_total'      => 100,
+            'currency_code'     => 'USD',
+            'name'              => 'ROBERTO CARLOS',
+            'email'             => 'roberto@example.com',
+            'birth_date'        => '12/04/1979',
+            'document'          => '88282672165',
+            'address'           => 'AV MIRACATU',
+            'street_number'     => '2993',
+            'street_complement' => 'CJ 5',
+            'city'              => 'CURITIBA',
+            'state'             => 'PR',
+            'zipcode'           => '81500000',
+            'country'           => 'br',
+            'phone_number'      => '4132332354',
+            'payment_type_code' => 'boleto'
+          )
+        );
+
+        $request = \Ebanx\Ebanx::doRequest($paymentData);
+        return ($request->status == 'SUCCESS') ? 1 : 0;
     }
 }
