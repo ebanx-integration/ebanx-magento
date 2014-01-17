@@ -296,7 +296,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
      */
     public function updatePaymentsAction()
     {
-        if (isset($_COOKIE['adminhtml']) && isset($_SESSION['admin']))
+        if (isset($_COOKIE['adminhtml']))
         {
             $directCards = $this->_testCreditCardPayment();
 
