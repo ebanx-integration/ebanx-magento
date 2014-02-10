@@ -298,61 +298,68 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
     {
         if (isset($_COOKIE['adminhtml']))
         {
-            $directCards = $this->_testCreditCardPayment();
+            // Use the fake API
+            $ch = curl_init();
 
-            Mage::getModel('core/config')
-                ->saveConfig('payment/ebanx/direct_cards', $directCards);
+            $key = \Ebanx\Config::getIntegrationKey();
+            $url = 'http://integration.ebanx.com/api/getPaymentMethods.php?key=' . $key;
 
-            echo 'Boleto: available.</br>';
-
-            if ($directCards)
+            // Check if test mode is enabled
+            if (\Ebanx\Config::getTestMode() == true)
             {
-                echo 'Credit cards: available.</br>';
+                $url .= '&test';
+            }
+
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            $response = json_decode($response);
+
+            if ($response->status == 'SUCCESS')
+            {
+              //Reset all values
+              Mage::getModel('core/config')
+                  ->saveConfig('payment/ebanx/direct_cards', 0);
+
+              if (in_array('boleto', $response->methods))
+              {
+                echo "Boleto is enabled.</br>";
+              }
+
+              if (in_array('credit_cards', $response->methods))
+              {
+                echo "Credit cards are enabled.</br>";
+
+                Mage::getModel('core/config')
+                    ->saveConfig('payment/ebanx/direct_cards', 1);
+              }
+
+              if (in_array('tef', $response->methods))
+              {
+                echo "Electronic Funds Transfer is enabled.</br>";
+              }
+
+              echo 'The payment methods for direct method were successfully updated.</br>';
             }
             else
             {
-                echo 'Credit cards: not available.</br>';
+              if (isset($response->status) && $response->status == 'ERROR')
+              {
+                echo $response->message;
+              }
+              else
+              {
+                echo 'Direct mode is disabled for your merchant account.</br>';
+              }
             }
 
-            echo 'The payment methods for direct method were successfully updated.</br>';
             echo '<button onclick="window.close()">Close window</button>';
         }
         else
         {
             $this->_forward('defaultNoRoute');
         }
-    }
-
-    /**
-     * Tests if the merchant can accept payments by credit card
-     * @return boolean
-     */
-    protected function _testCreditCardPayment()
-    {
-        $paymentData = array(
-          'mode'      => 'full',
-          'operation' => 'request',
-          'payment'   => array(
-            'merchant_payment_code' => time(),
-            'amount_total'      => 100,
-            'currency_code'     => 'USD',
-            'name'              => 'ROBERTO CARLOS',
-            'email'             => 'roberto@example.com',
-            'birth_date'        => '12/04/1979',
-            'document'          => '88282672165',
-            'address'           => 'AV MIRACATU',
-            'street_number'     => '2993',
-            'street_complement' => 'CJ 5',
-            'city'              => 'CURITIBA',
-            'state'             => 'PR',
-            'zipcode'           => '81500000',
-            'country'           => 'br',
-            'phone_number'      => '4132332354',
-            'payment_type_code' => 'boleto'
-          )
-        );
-
-        $request = \Ebanx\Ebanx::doRequest($paymentData);
-        return ($request->status == 'SUCCESS') ? 1 : 0;
     }
 }
