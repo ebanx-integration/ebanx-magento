@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.1.2: add validation to return and notify actions
 * 1.1.1: updated the UpdatePaymentMethods action to use the fake API, removed installments from checkout mode
 * 1.1.0: implemented direct checkout (full mode)
 * 1.0.7: fixed wrong installment values when using multiple currencies

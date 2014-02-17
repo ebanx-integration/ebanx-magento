@@ -184,25 +184,30 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
      */
     public function notifyAction()
     {
-        $hashes = explode(',', $this->getRequest()->getParam('hash_codes'));
+        $hashes = $this->getRequest()->getParam('hash_codes');
 
-        foreach ($hashes as $hash)
+        if (isset($hashes) && $hashes != null)
         {
-            $orderPayment = Mage::getModel('sales/order_payment')
-                                ->getCollection()
-                                ->addFieldToFilter('ebanx_hash', $hash)
-                                ->getFirstItem();
+            $hashes = explode(',', $hashes);
 
-            $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
+            foreach ($hashes as $hash)
+            {
+                $orderPayment = Mage::getModel('sales/order_payment')
+                                    ->getCollection()
+                                    ->addFieldToFilter('ebanx_hash', $hash)
+                                    ->getFirstItem();
 
-            // Get the new status from Magento
-            $orderStatus = $this->_getOrderStatus($response->payment->status);
+                $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
 
-            // Update order status
-            $order = Mage::getModel('sales/order')
-                        ->load($orderPayment->getParentId(), 'entity_id');
-            $order->setStatus($orderStatus)
-                  ->save();
+                // Get the new status from Magento
+                $orderStatus = $this->_getOrderStatus($response->payment->status);
+
+                // Update order status
+                $order = Mage::getModel('sales/order')
+                            ->load($orderPayment->getParentId(), 'entity_id');
+                $order->setStatus($orderStatus)
+                      ->save();
+            }
         }
     }
 
@@ -215,6 +220,13 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
         if ($this->getRequest()->isGet())
         {
             $hash = $this->getRequest()->getParam('hash');
+
+            if ($hash == null)
+            {
+              $this->getResponse()
+                 ->setRedirect(Mage::getUrl('customer/account'));
+            }
+
             $merchantPaymentCode = $this->getRequest()->getParam('merchant_payment_code');
 
             $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
