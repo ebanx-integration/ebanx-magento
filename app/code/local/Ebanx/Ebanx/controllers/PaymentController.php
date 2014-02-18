@@ -205,10 +205,16 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                 // Update order status
                 $order = Mage::getModel('sales/order')
                             ->load($orderPayment->getParentId(), 'entity_id');
-                $order->setStatus($orderStatus)
-                      ->save();
+
+                if ($order)
+                {
+                  $order->setStatus($orderStatus)
+                        ->save();
+                }
             }
         }
+
+        echo 'OK';
     }
 
     /**
@@ -238,8 +244,12 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 
                 // Update order status
                 $order = Mage::getModel('sales/order')->loadByIncrementId($merchantPaymentCode);
-                $order->setStatus($orderStatus)
-                      ->save();
+
+                if ($order)
+                {
+                  $order->setStatus($orderStatus)
+                        ->save();
+                }
             }
 
             $this->getResponse()
