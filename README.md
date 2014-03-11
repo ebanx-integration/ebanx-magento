@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.1.4: changed boleto page layout (one column), fixed direct checkout broken HTML
 * 1.1.3: fixed missing order in notify action
 * 1.1.2: add validation to return and notify actions
 * 1.1.1: updated the UpdatePaymentMethods action to use the fake API, removed installments from checkout mode
