@@ -199,17 +199,20 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 
                 $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
 
-                // Get the new status from Magento
-                $orderStatus = $this->_getOrderStatus($response->payment->status);
-
-                // Update order status
-                $order = Mage::getModel('sales/order')
-                            ->load($orderPayment->getParentId(), 'entity_id');
-
-                if ($order)
+                if ($response->status == 'SUCCESS')
                 {
-                  $order->setStatus($orderStatus)
-                        ->save();
+                    // Get the new status from Magento
+                    $orderStatus = $this->_getOrderStatus($response->payment->status);
+
+                    // Update order status
+                    $order = Mage::getModel('sales/order')
+                                ->load($orderPayment->getParentId(), 'entity_id');
+
+                    if ($order->getRealOrderId())
+                    {
+                        $order->addStatusToHistory($orderStatus, '', true)
+                              ->save();
+                    }
                 }
             }
         }
