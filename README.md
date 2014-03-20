@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.1.6: fixed multiple adresses issue (it was sending an array instead of string)
 * 1.1.5: fixed notification errors (missing hashes and/or orders)
 * 1.1.4: changed boleto page layout (one column), fixed direct checkout broken HTML
 * 1.1.3: fixed missing order in notify action

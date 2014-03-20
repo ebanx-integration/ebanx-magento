@@ -57,6 +57,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 
     protected function _doDefaultCheckout($order, $session)
     {
+
       $params = array(
           'name'              => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname()
         , 'email'             => $order->getCustomerEmail()
@@ -64,10 +65,10 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
         , 'amount'            => $session['ebanxBaseGrandTotal']
         , 'payment_type_code' => '_all'
         , 'merchant_payment_code' => $session['apiOrderIncrementId']
-        , 'zipcode'           => $order->getBillingAddress()->getPostcode()
-        , 'address'           => $order->getBillingAddress()->getStreet()
-        , 'city'              => $order->getBillingAddress()->getCity()
-        , 'state'             => $order->getBillingAddress()->getRegion()
+        , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
+        , 'address'           => $order->getBillingAddress()->getData('street')
+        , 'city'              => $order->getBillingAddress()->getData('city')
+        , 'state'             => $order->getBillingAddress()->getRegionCode()
       );
 
       // Add installments to order
@@ -114,11 +115,11 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
               , 'amount_total'      => $order->getBaseGrandTotal()
               , 'payment_type_code' => $session['ebanxMethod']
               , 'merchant_payment_code' => $session['apiOrderIncrementId']
-              , 'zipcode'           => $order->getBillingAddress()->getPostcode()
-              , 'address'           => $order->getBillingAddress()->getStreet()
-              , 'street_number'     => preg_replace('/[\D]/', '', $order->getBillingAddress()->getStreet())
-              , 'city'              => $order->getBillingAddress()->getCity()
-              , 'state'             => $order->getBillingAddress()->getRegion()
+              , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
+              , 'address'           => $order->getBillingAddress()->getData('street')
+              , 'street_number'     => preg_replace('/[\D]/', '', $order->getBillingAddress()->getData('street'))
+              , 'city'              => $order->getBillingAddress()->getData('city')
+              , 'state'             => $order->getBillingAddress()->getRegionCode()
               , 'country'           => 'br'
           )
         );
