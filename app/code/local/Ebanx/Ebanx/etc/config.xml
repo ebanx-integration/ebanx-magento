@@ -100,6 +100,7 @@
         <maximum_installments>6</maximum_installments>
 				<interest_installments>0.0</interest_installments>
 				<title_checkout>EBANX (Boleto Bancário, Itaú, Bradesco, Banco do Brasil)</title_checkout>
+        <direct_payment_methods>boleto,tef</direct_payment_methods>
         <activationstatus>0</activationstatus>
 			</ebanx>
 		</payment>

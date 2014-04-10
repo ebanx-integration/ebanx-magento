@@ -23,8 +23,9 @@
   float: left;
   display: block;
   overflow: hidden;
-  width: 290px;
-  margin: 10px 0 0 0;
+  width: 120px;
+  height: 130px;
+  margin: 10px 20px 0 0;
 }
 .ebanx-method .payment-method input {
   float: left;
@@ -34,13 +35,47 @@
 }
 .ebanx-method .payment-method label {
   cursor: pointer;
-  opacity: 0.6;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: 78px;
+  height: 88px;
+  padding: 20px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
 }
 .ebanx-method .payment-method.active label,
 .ebanx-method .payment-method label:hover {
-  opacity: 1;
+  border-color: #f26624;
 }
-.ebanx-method .payment-method label img {}
+.ebanx-method .payment-method.active label:before {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: -3.125em;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 3em solid transparent;
+  border-right: 3em solid transparent;
+  border-top: 3em solid #f26624;
+}
+.ebanx-method .payment-method label img {
+  margin: 0 auto 10px;
+}
+.ebanx-method .payment-method label .desc {
+  font-size: 1.1em;
+  line-height: 1.1em;
+}
+.ebanx-method .payment-method.active label .desc:before {
+  content: '✓';
+  font-size: 20px;
+  color: #fff;
+  position: absolute;
+  top: 6px;
+  left: 2px;
+  z-index: 101;
+}
 </style>
 
 <ul class="form-list" id="payment_ebanx_direct">
@@ -86,25 +121,39 @@
   <li>
     <label for="payment-method" class="required"><em>*</em>Payment Method</label>
     <div class="input-box ebanx-method">
-      <?php if ($this->getDirectCards()): ?>
-      <div class="payment-method payment-method-toggle">
-        <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
-        <label for="ebanx_method_creditcard">
-          <img src="<?php echo $this->getSkinUrl('images/ebanx-creditcards.png') ?>" width="264" height="63" />
+      <?php if (in_array('boleto', $this->getDirectMethods())): ?>
+      <div class="payment-method active payment-method-toggle">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
+        <label for="ebanx_method_boleto">
+          <img src="<?php echo $this->getSkinUrl('images/ebanx_boleto.png') ?>"/>
+          <p class="desc">Boleto bancário</p>
         </label>
       </div>
       <? endif ?>
 
-      <div class="payment-method active payment-method-toggle">
-        <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
-        <label for="ebanx_method_boleto">
-          <img src="<?php echo $this->getSkinUrl('images/ebanx-boleto.png') ?>" width="264" height="63" />
+      <?php if (in_array('credit_card', $this->getDirectMethods())): ?>
+      <div class="payment-method payment-method-toggle">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
+        <label for="ebanx_method_creditcard">
+          <img src="<?php echo $this->getSkinUrl('images/ebanx_creditcard.png') ?>"/>
+          <p class="desc">Cartão de crédito</p>
         </label>
       </div>
+      <? endif ?>
+
+      <?php if (in_array('tef', $this->getDirectMethods())): ?>
+      <div class="payment-method payment-method-toggle">
+        <input type="radio" name="ebanx[method]" id="ebanx_method_tef" value="tef" />
+        <label for="ebanx_method_tef">
+          <img src="<?php echo $this->getSkinUrl('images/ebanx_tef.png') ?>" />
+          <p class="desc">Trasferência bancária</p>
+        </label>
+      </div>
+      <? endif ?>
     </div>
   </li>
 
-  <?php if ($this->getDirectCards()): ?>
+  <?php if (in_array('credit_card', $this->getDirectMethods())): ?>
     <li class="ebanx-cc-field">
       <label for="ebanx_cc_name" class="required"><em>*</em>Name on Card</label>
       <div class="input-box">
@@ -209,6 +258,7 @@
       , 'ebanx_birth_year'
       , 'ebanx_method_boleto'
       , 'ebanx_method_creditcard'
+      , 'ebanx_method_tef'
       , 'ebanx_cc_installments'
     ];
 
@@ -263,11 +313,13 @@
 
   // Toggle the CC fields on method change
   var methodBoleto = document.getElementById('ebanx_method_boleto')
-    , methodCC     = document.getElementById('ebanx_method_creditcard');
+    , methodCC     = document.getElementById('ebanx_method_creditcard')
+    , methodTef    = document.getElementById('ebanx_method_tef');
 
   if (methodCC && methodBoleto) {
     methodCC.onclick     = toggleCCFields;
     methodBoleto.onclick = toggleCCFields;
+    methodTef.onclick    = toggleCCFields;
   }
 
   setTimeout(toggleDirectForm, 1000);

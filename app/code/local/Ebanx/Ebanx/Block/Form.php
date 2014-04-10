@@ -138,8 +138,8 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
         }
 
         $this->addData(array(
-           'installments_active' => 0 //force no installments$installmentsActive
-         , 'max_installments'    => 1 //force no installments$maxInstallments
+           'installments_active' => $installmentsActive
+         , 'max_installments'    => $maxInstallments
          , 'installment_cards'   => $installmentCards
          , 'price_upfront'       => $this->getFinalValue()
          , 'price_interest'      => $priceInterest
@@ -148,7 +148,7 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
          , 'birth_day'           => $birthDay
          , 'birth_month'         => $birthMonth
          , 'birth_year'          => $birthYear
-         , 'direct_cards'        => $ebanxConfig['direct_cards']
+         , 'direct_methods'      => explode(',', $ebanxConfig['direct_payment_methods'])
         ));
     }
 }

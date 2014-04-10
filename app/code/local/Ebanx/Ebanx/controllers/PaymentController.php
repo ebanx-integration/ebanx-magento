@@ -213,12 +213,20 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                     {
                         $order->addStatusToHistory($orderStatus, '', true)
                               ->save();
+
+                        echo 'OK: payment ' . $hash . ' was updated<br>';
                     }
+                }
+                else
+                {
+                  echo 'NOK: payment ' . $hash . ' could not be updated.<br>';
                 }
             }
         }
-
-        echo 'OK';
+        else
+        {
+          echo 'NOK: empty request.';
+        }
     }
 
     /**
@@ -313,79 +321,6 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
         {
             $this->getResponse()
                  ->setRedirect(Mage::getUrl('checkout/onepage/success'));
-        }
-    }
-
-    /**
-     * Updates the allowed payment methods in direct mode
-     * @return void
-     */
-    public function updatePaymentsAction()
-    {
-        if (isset($_COOKIE['adminhtml']))
-        {
-            // Use the fake API
-            $ch = curl_init();
-
-            $key = \Ebanx\Config::getIntegrationKey();
-            $url = 'http://integration.ebanx.com/api/getPaymentMethods.php?key=' . $key;
-
-            // Check if test mode is enabled
-            if (\Ebanx\Config::getTestMode() == true)
-            {
-                $url .= '&test';
-            }
-
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-            $response = json_decode($response);
-
-            if ($response->status == 'SUCCESS')
-            {
-              //Reset all values
-              Mage::getModel('core/config')
-                  ->saveConfig('payment/ebanx/direct_cards', 0);
-
-              if (in_array('boleto', $response->methods))
-              {
-                echo "Boleto is enabled.</br>";
-              }
-
-              if (in_array('credit_cards', $response->methods))
-              {
-                echo "Credit cards are enabled.</br>";
-
-                Mage::getModel('core/config')
-                    ->saveConfig('payment/ebanx/direct_cards', 1);
-              }
-
-              if (in_array('tef', $response->methods))
-              {
-                echo "Electronic Funds Transfer is enabled.</br>";
-              }
-
-              echo 'The payment methods for direct method were successfully updated.</br>';
-            }
-            else
-            {
-              if (isset($response->status) && $response->status == 'ERROR')
-              {
-                echo $response->message;
-              }
-              else
-              {
-                echo 'Direct mode is disabled for your merchant account.</br>';
-              }
-            }
-
-            echo '<button onclick="window.close()">Close window</button>';
-        }
-        else
-        {
-            $this->_forward('defaultNoRoute');
         }
     }
 }
