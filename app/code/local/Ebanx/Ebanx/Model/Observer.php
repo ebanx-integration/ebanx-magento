@@ -116,6 +116,13 @@ class Ebanx_Ebanx_Model_Observer
                 $session->setData('ebanxCCExpiration', $ccExpiration);
             }
 
+            // If method == TEF, get the bank value
+            if ($ebanx['method'] == 'tef')
+            {
+                $session->setData('ebanxMethodTef', true);
+                $session->setData('ebanxMethod', $ebanx['tef_bank']);
+            }
+
             // Save CPF and birthdate
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             $customer->setEbanxCpf($ebanx['cpf']);

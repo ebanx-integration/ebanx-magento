@@ -136,6 +136,12 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
             );
         }
 
+        // For TEF and Bradesco, add redirect another parameter
+        if ($session['ebanxMethod'] == 'bradesco')
+        {
+          $params['payment']['payment_type_code_option'] = 'banktransfer';
+        }
+
         // Add installments to order - except to Discover payments
         if (intval($session['ebanxInstallmentsNumber']) > 1 && $session['ebanxInstallmentsCard'] != 'discover')
         {
@@ -154,7 +160,14 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                   ->setData('ebanx_hash', $hash)
                   ->save();
 
-            // Redirect to EBANX
+            // Redirect to bank page if the client chose TEF
+            if (isset($method['ebanxMethodTef']))
+            {
+              $this->getResponse()
+                    ->setRedirect($response->redirect_url);
+            }
+
+            // Redirect to EBANX success page on client store
             $this->getResponse()
                  ->setRedirect(Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash);
         }
