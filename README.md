@@ -34,6 +34,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.2.1: updated EBANX library
 * 1.2.0: added TEF to direct checkout
 * 1.1.6: fixed multiple adresses issue (it was sending an array instead of string)
 * 1.1.5: fixed notification errors (missing hashes and/or orders)
