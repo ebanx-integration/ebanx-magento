@@ -361,10 +361,16 @@
     , methodCC     = document.getElementById('ebanx_method_creditcard')
     , methodTef    = document.getElementById('ebanx_method_tef');
 
-  if (methodCC && methodBoleto) {
-    methodCC.onclick     = toggleFields;
+  if (methodCC) {
+    methodCC.onclick = toggleFields;
+  }
+
+  if (methodBoleto) {
     methodBoleto.onclick = toggleFields;
-    methodTef.onclick    = toggleFields;
+  }
+
+  if (methodTef) {
+    methodTef.onclick = toggleFields;
   }
 
   setTimeout(toggleDirectForm, 1000);
