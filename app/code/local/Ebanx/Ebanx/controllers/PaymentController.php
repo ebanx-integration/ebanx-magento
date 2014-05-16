@@ -161,15 +161,17 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                   ->save();
 
             // Redirect to bank page if the client chose TEF
-            if (isset($method['ebanxMethodTef']))
+            if (isset($response->redirect_url))
             {
               $this->getResponse()
                     ->setRedirect($response->redirect_url);
             }
-
-            // Redirect to EBANX success page on client store
-            $this->getResponse()
-                 ->setRedirect(Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash);
+            else
+            {
+              // Redirect to EBANX success page on client store
+              $this->getResponse()
+                   ->setRedirect(Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash);
+            }
         }
         else
         {
