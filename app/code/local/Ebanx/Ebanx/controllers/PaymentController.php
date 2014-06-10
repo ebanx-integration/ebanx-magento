@@ -35,166 +35,6 @@ require_once dirname(dirname(__FILE__)) . '/etc/bootstrap.php';
 class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * Create a new checkout request and redirects to EBANX
-     * @return void
-     */
-    public function checkoutAction()
-    {
-        $session = Mage::getSingleton('checkout/session');
-        $order   = Mage::getModel('sales/order')->load($session['apiOrderId']);
-
-        $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
-
-        if (intval($ebanxConfig['direct']) == 1)
-        {
-            $this->_doDirectCheckout($order, $session);
-        }
-        else
-        {
-            $this->_doDefaultCheckout($order, $session);
-        }
-    }
-
-    protected function _doDefaultCheckout($order, $session)
-    {
-
-      $params = array(
-          'name'              => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname()
-        , 'email'             => $order->getCustomerEmail()
-        , 'currency_code'     => $order->getBaseCurrencyCode()
-        , 'amount'            => $session['ebanxBaseGrandTotal']
-        , 'payment_type_code' => '_all'
-        , 'merchant_payment_code' => $session['apiOrderIncrementId']
-        , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
-        , 'address'           => $order->getBillingAddress()->getData('street')
-        , 'city'              => $order->getBillingAddress()->getData('city')
-        , 'state'             => $order->getBillingAddress()->getRegionCode()
-      );
-
-      // Add installments to order
-      if (intval($session['ebanxInstallmentsNumber']) > 1)
-      {
-          $params['instalments']       = $session['ebanxInstallmentsNumber'];
-          $params['payment_type_code'] = $session['ebanxInstallmentsCard'];
-      }
-
-      $response = \Ebanx\Ebanx::doRequest($params);
-
-      if (!empty($response) && $response->status == 'SUCCESS')
-      {
-          // Add the EBANX hash in the order data
-          $order->getPayment()
-                ->setData('ebanx_hash', $response->payment->hash)
-                ->save();
-
-          // Redirect to EBANX
-          $this->getResponse()
-               ->setRedirect($response->redirect_url);
-      }
-      else
-      {
-          $msg = $response->status_message;
-          Mage::log("BeginPayment failed with [$msg]");
-          $session->addError('An unrecoverable error occured while processing your payment information. ' . $msg);
-          Mage::throwException($msg);
-      }
-    }
-
-    protected function _doDirectCheckout($order, $session)
-    {
-        $params = array(
-            'mode'      => 'full'
-          , 'operation' => 'request'
-          , 'payment'   => array(
-                'name'              => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname()
-              , 'document'          => $session['ebanxCpf']
-              , 'birth_date'        => $session['ebanxBirth']
-              , 'email'             => $order->getCustomerEmail()
-              , 'phone_number'      => $order->getBillingAddress()->getTelephone()
-              , 'currency_code'     => $order->getBaseCurrencyCode()
-              , 'amount_total'      => $order->getBaseGrandTotal()
-              , 'payment_type_code' => $session['ebanxMethod']
-              , 'merchant_payment_code' => $session['apiOrderIncrementId']
-              , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
-              , 'address'           => $order->getBillingAddress()->getData('street')
-              , 'street_number'     => preg_replace('/[\D]/', '', $order->getBillingAddress()->getData('street'))
-              , 'city'              => $order->getBillingAddress()->getData('city')
-              , 'state'             => $order->getBillingAddress()->getRegionCode()
-              , 'country'           => 'br'
-          )
-        );
-
-        // Add credit card fields if the method is credit card
-        if ($session['ebanxMethod'] == 'creditcard')
-        {
-            $params['payment']['payment_type_code'] = $session['ebanxCCType'];
-            $params['payment']['creditcard'] = array(
-                'card_name'     => $session['ebanxCCName']
-              , 'card_number'   => $session['ebanxCCNumber']
-              , 'card_cvv'      => $session['ebanxCCCVV']
-              , 'card_due_date' => $session['ebanxCCExpiration']
-            );
-        }
-
-        // For TEF and Bradesco, add redirect another parameter
-        if ($session['ebanxMethod'] == 'bradesco')
-        {
-          $params['payment']['payment_type_code_option'] = 'banktransfer';
-        }
-
-        // Add installments to order - except to Discover payments
-        if (intval($session['ebanxInstallmentsNumber']) > 1 && $session['ebanxInstallmentsCard'] != 'discover')
-        {
-            $params['payment']['instalments']  = $session['ebanxInstallmentsNumber'];
-            $params['payment']['amount_total'] = $session['ebanxBaseGrandTotal'];
-        }
-
-        $response = \Ebanx\Ebanx::doRequest($params);
-
-        if (!empty($response) && $response->status == 'SUCCESS')
-        {
-            $hash = $response->payment->hash;
-
-            // Add the EBANX hash in the order data
-            $order->getPayment()
-                  ->setData('ebanx_hash', $hash)
-                  ->save();
-
-            // Redirect to bank page if the client chose TEF
-            if (isset($response->redirect_url))
-            {
-              $this->getResponse()
-                    ->setRedirect($response->redirect_url);
-            }
-            else
-            {
-              // Redirect to EBANX success page on client store
-              $this->getResponse()
-                   ->setRedirect(Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash);
-            }
-        }
-        else
-        {
-            $msg = $response->status_message;
-            Mage::log("BeginPayment failed with [$msg]");
-            $session->addError('An unrecoverable error occured while processing your payment information. ' . $msg);
-
-            // Recover the cart
-            $quote = Mage::getModel('sales/quote')->load($order->getQuoteId());
-            $quote->setIsActive(true)
-                  ->save();
-
-            // Cancel the order
-            $order->setStatus($this->_getOrderStatus('CA'))
-                  ->save();
-
-            // Redirect back to cart
-            $this->getResponse()
-                 ->setRedirect(Mage::getUrl('checkout/cart'));
-        }
-    }
-
-    /**
      * Notification URI for the EBANX robot
      * @return void
      */
@@ -307,14 +147,12 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
      */
     public function successAction()
     {
-        $session = Mage::getSingleton('checkout/session');
+        $hash     = $this->getRequest()->getParam('hash');
+        $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
 
         // Shows the boleto print page
-        if ($session['ebanxMethod'] == 'boleto')
+        if ($response->payment->payment_type_code == 'boleto')
         {
-            $hash     = $this->getRequest()->getParam('hash');
-            $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
-
             // Render the success page - inherits the default success page
             $incrementId = $response->payment->merchant_payment_code;
             $order = Mage::getModel('sales/order')->load($incrementId, 'increment_id');
@@ -325,9 +163,8 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                  ->setTemplate('ebanx/payment/success.phtml');
 
             // hacks!
-            $_SESSION['boletoUrl']    = $response->payment->boleto_url;
+            $_SESSION['boletoUrl'] = $response->payment->boleto_url;
 
-            $session->clear();
             Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($order->getId())));
             $this->loadLayout()->renderLayout();
         }

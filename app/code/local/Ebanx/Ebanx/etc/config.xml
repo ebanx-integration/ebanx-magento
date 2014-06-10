@@ -86,7 +86,7 @@
 				<group>ebanx</group>
 				<active>1</active>
 				<title>EBANX (Boleto Bancário, HSBC, Itaú, Bradesco, Banco do Brasil, Visa, Mastercard)</title>
-				<payment_action>sale</payment_action>
+				<payment_action>authorize</payment_action>
 				<allowspecific>0</allowspecific>
 				<testing>1</testing>
         <direct>0</direct>

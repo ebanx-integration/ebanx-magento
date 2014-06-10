@@ -226,7 +226,7 @@
     </li>
   <?php endif ?>
 
-  <?php if ($this->getMaxInstallments() > 1): ?>
+  <?php if ($this->getMaxInstallments() > 200): ?>
   <li class="ebanx-cc-field" id="ebanx_installments">
     <label for="ebanx_cc_installments" class="required"><em>*</em>Installments</label>
 
@@ -415,6 +415,10 @@
   function enableInstallments() {
     var installments = document.getElementById('ebanx_installments')
       , ccType       = document.getElementById('ebanx_cc_type');
+
+    if (!cc_type) {
+      return;
+    }
 
     if (ccType.value == 'discover') {
       installments.style.display = 'none';
