@@ -75,10 +75,13 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
      */
     public function void(Varien_Object $payment)
     {
+        parent::void($payment);
+
         $hash = $payment->getData('ebanx_hash');
+        Mage::log('Void order ' . $hash);
 
         $response = \Ebanx\Ebanx::doRefundOrCancel(array(
-            'hash' => $request->payment->hash
+            'hash' => $hash
           , 'description' => 'The order has been cancelled.'
         ));
 
@@ -92,6 +95,9 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
      */
     public function cancel(Varien_Object $payment)
     {
+        $hash = $payment->getData('ebanx_hash');
+        Mage::log('Cancel order ' . $hash);
+
         return $this->void($payment);
     }
 
@@ -109,7 +115,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
         $order   = $payment->getOrder();
         $ebanx   = Mage::app()->getRequest()->getParam('ebanx');
 
-        Mage::log('Authorizing order [' . $order->getApiOrderId . ']');
+        Mage::log('Authorizing order [' . $order->getApiOrderId() . ']');
 
         $birthDate = str_pad($ebanx['birth_day'],   2, '0', STR_PAD_LEFT) . '/'
                        . str_pad($ebanx['birth_month'], 2, '0', STR_PAD_LEFT) . '/'
@@ -214,10 +220,13 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
      */
     public function refund(Varien_Object $payment, $amount)
     {
+        parent::refund($payment, $amount);
+
         $hash = $payment->getData('ebanx_hash');
+        Mage::log('Refund order ' . $hash);
 
         $response = \Ebanx\Ebanx::doRefund(array(
-            'hash'      => $request->payment->hash
+            'hash'      => $hash
           , 'operation' => 'request'
           , 'amount'    => $amount
           , 'description' => 'Order re'

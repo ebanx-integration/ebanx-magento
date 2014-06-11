@@ -59,20 +59,20 @@ class Ebanx_Ebanx_Model_Observer
         // Setup installments and update the total with the interest rate
         $installmentsNumber = 1;
         $installmentsCard   = null;
-        if (isset($ebanx) && count($ebanx) >= 1)
-        {
-            $installmentsNumber = $ebanx['installments'];
-            $installmentsCard   = (isset($ebanx['installments_card'])) ? $ebanx['installments_card'] : $ebanx['cc_type'];
+        // if (isset($ebanx) && count($ebanx) >= 1)
+        // {
+        //     $installmentsNumber = $ebanx['installments'];
+        //     $installmentsCard   = (isset($ebanx['installments_card'])) ? $ebanx['installments_card'] : $ebanx['cc_type'];
 
-            // Update grand total with interest values
-            // @todo: add interest field and show it to the client => like a new tax
-            if (intval($installmentsNumber) > 1)
-            {
-                $interestRate = Mage::getStoreConfig('payment/ebanx/interest_installments');
-                $grandTotal = ($order->getBaseGrandTotal() * (100 + floatval($interestRate))) / 100.0;
-                $session->setData('ebanxBaseGrandTotal', $grandTotal);
-            }
-        }
+        //     // Update grand total with interest values
+        //     // @todo: add interest field and show it to the client => like a new tax
+        //     if (intval($installmentsNumber) > 1)
+        //     {
+        //         $interestRate = Mage::getStoreConfig('payment/ebanx/interest_installments');
+        //         $grandTotal = ($order->getBaseGrandTotal() * (100 + floatval($interestRate))) / 100.0;
+        //         $session->setData('ebanxBaseGrandTotal', $grandTotal);
+        //     }
+        // }
 
         $session->setData('ebanxQuoteId', $quoteId);
         $session->setData('ebanxInstallmentsNumber', $installmentsNumber);
