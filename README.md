@@ -34,6 +34,8 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 Coming soon!
 
 ## Changelog
+* 1.3.1: added brazilian states list, country filter.
+* 1.3.0: added authorize method.
 * 1.2.1: fixed direct checkout bank selector, updated EBANX library
 * 1.2.0: added TEF to direct checkout
 * 1.1.6: fixed multiple adresses issue (it was sending an array instead of string)

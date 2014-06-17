@@ -129,6 +129,27 @@
           		<show_in_website>1</show_in_website>
       		    <show_in_store>0</show_in_store>
           	</direct_payment_methods>
+
+            <allowspecific translate="label">
+              <label>Payment from Applicable Countries</label>
+              <frontend_type>select</frontend_type>
+              <sort_order>13</sort_order>
+              <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </allowspecific>
+
+            <specificcountry translate="label">
+              <label>Payment from Specific Countries</label>
+              <frontend_type>multiselect</frontend_type>
+              <sort_order>14</sort_order>
+              <source_model>adminhtml/system_config_source_country</source_model>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <depends><allowspecific>1</allowspecific></depends>
+            </specificcountry>
 					</fields>
 				</ebanx>
 			</groups>
