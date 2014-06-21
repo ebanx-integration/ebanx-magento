@@ -36,35 +36,35 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
 {
 	protected $_code = 'ebanx';
 
-    protected $_isGateway          = true;
-    protected $_isInitializeNeeded = false;
+  protected $_isGateway          = true;
+  protected $_isInitializeNeeded = false;
 
-    /**
-     * Allowed operations
-     */
-    protected $_canAuthorize           = true;
-    protected $_canCapture             = false;
-    protected $_canCapturePartial      = false;
-    protected $_canRefund              = true;
-    protected $_canVoid                = true;
-    protected $_canCancel              = true;
-    protected $_canUseInternal         = false;
-    protected $_canUseCheckout         = true;
-    protected $_canUseForMultishipping = false;
+  /**
+   * Allowed operations
+   */
+  protected $_canAuthorize           = true;
+  protected $_canCapture             = true;
+  protected $_canCapturePartial      = false;
+  protected $_canRefund              = true;
+  protected $_canVoid                = true;
+  protected $_canCancel              = true;
+  protected $_canUseInternal         = false;
+  protected $_canUseCheckout         = true;
+  protected $_canUseForMultishipping = false;
 
-    /**
-     * The form block
-     * @var string
-     */
-  	protected $_formBlockType = 'ebanx/form';
+  /**
+   * The form block
+   * @var string
+   */
+	protected $_formBlockType = 'ebanx/form';
 
-    /**
-     * Gets the payment controller checkout URL
-     * @return string
-     */
+  /**
+   * Gets the payment controller checkout URL
+   * @return string
+   */
 	public function getOrderPlaceRedirectUrl()
 	{
-        Mage::log('Redirecting to ' . $_SESSION['ebxRedirectUrl']);
+    Mage::log('Redirecting to ' . $_SESSION['ebxRedirectUrl']);
 		return $_SESSION['ebxRedirectUrl'];
 	}
 
@@ -174,7 +174,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
         {
             $response = \Ebanx\Ebanx::doRequest($params);
 
-            Mage::log('Authorizing order [' . $order->getApiOrderId . '] - calling EBANX');
+            Mage::log('Authorizing order [' . $order->getIncrementId() . '] - calling EBANX');
 
             if (!empty($response) && $response->status == 'SUCCESS')
             {
@@ -196,11 +196,11 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
                   $_SESSION['ebxRedirectUrl'] = Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash;
                 }
 
-                Mage::log('Authorizing order [' . $order->getApiOrderId . '] - success');
+                Mage::log('Authorizing order [' . $order->getIncrementId() . '] - success');
             }
             else
             {
-                Mage::log('Authorizing order [' . $order->getApiOrderId . '] - error: ' . $response->status_message);
+                Mage::log('Authorizing order [' . $order->getIncrementId() . '] - error: ' . $response->status_message);
                 Mage::throwException($response->status_message);
             }
         }

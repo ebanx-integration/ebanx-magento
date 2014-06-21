@@ -64,12 +64,41 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                     $order = Mage::getModel('sales/order')
                                 ->load($orderPayment->getParentId(), 'entity_id');
 
+                    // If the order exists
                     if ($order->getRealOrderId())
                     {
-                        $order->addStatusToHistory($orderStatus, '', true)
-                              ->save();
+                      // If payment status is CA - Canceled - AND order can be cancelled
+                      if ($response->payment->status == 'CA' && $order->canCancel())
+                      {
+                        // Cancel order
+                        $order->cancel();
 
-                        echo 'OK: payment ' . $hash . ' was updated<br>';
+                        // Set orderStatus to Generic canceled status - nothing more to do
+                        $orderStatus = 'canceled';
+                      }
+
+                      // If payment status is CO - Paid - AND order can be invoiced
+                      if ($response->payment->status == 'CO' && $order->canInvoice())
+                      {
+                        // Prepare invoice
+                        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+
+                        // Set capture case
+                        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
+                        $invoice->capture();
+                        $invoice->save();
+
+                        $transactionSave = Mage::getModel('core/resource_transaction')
+                                  ->addObject($invoice)
+                                  ->addObject($invoice->getOrder());
+                        $transactionSave->save();
+                      }
+
+                      // Set status - TODO: Add notification to customer
+                      $order->addStatusToHistory($orderStatus, '', true)
+                            ->save();
+
+                      echo 'OK: payment ' . $hash . ' was updated<br>';
                     }
                 }
                 else

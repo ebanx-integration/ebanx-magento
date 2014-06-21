@@ -30,10 +30,8 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 ```
 7. That's all!
 
-### Magento Connect
-Coming soon!
-
 ## Changelog
+* 1.4.0: removed unused code, refactored notifications processing.
 * 1.3.1: added brazilian states list, country filter.
 * 1.3.0: added authorize method.
 * 1.2.1: fixed direct checkout bank selector, updated EBANX library
