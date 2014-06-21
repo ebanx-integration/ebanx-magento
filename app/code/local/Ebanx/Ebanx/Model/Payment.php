@@ -121,6 +121,10 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
                        . str_pad($ebanx['birth_month'], 2, '0', STR_PAD_LEFT) . '/'
                        . $ebanx['birth_year'];
 
+        // Street number workaround
+        $streetNumber = preg_replace('/[\D]/', '', $order->getBillingAddress()->getData('street'));
+        $streetNumber = ($streetNumber > 0) ? $streetNumber : '1';
+
         $params = array(
             'mode'      => 'full'
           , 'operation' => 'request'
@@ -136,7 +140,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
               , 'merchant_payment_code' => $order->getIncrementId()
               , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
               , 'address'           => $order->getBillingAddress()->getData('street')
-              , 'street_number'     => preg_replace('/[\D]/', '', $order->getBillingAddress()->getData('street'))
+              , 'street_number'     => $streetNumber
               , 'city'              => $order->getBillingAddress()->getData('city')
               , 'state'             => $order->getBillingAddress()->getRegionCode()
               , 'country'           => 'br'
