@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Ebanx_Ebanx>
-			<version>1.4.0</version>
+			<version>1.5.0</version>
 		</Ebanx_Ebanx>
 	</modules>
 
@@ -100,6 +100,7 @@
 				<interest_installments>0.0</interest_installments>
 				<title_checkout>EBANX (Boleto Bancário, Itaú, Bradesco, Banco do Brasil)</title_checkout>
         <direct_payment_methods>boleto,tef</direct_payment_methods>
+        <boleto_due_date>3</boleto_due_date>
         <activationstatus>0</activationstatus>
         <allowspecific>0</allowspecific>
         <specificcountry>BR</specificcountry>

@@ -174,6 +174,14 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
             }
         }
 
+        // For boleto, set the due date
+        if ($ebanx['method'] == 'boleto')
+        {
+          $dueDays = intval(Mage::getStoreConfig('payment/ebanx/boleto_due_date'));
+          $dueDate = date('d/m/Y', strtotime("+{$dueDays} day", time()));
+          $params['payment']['due_date'] = $dueDate;
+        }
+
         try
         {
             $response = \Ebanx\Ebanx::doRequest($params);

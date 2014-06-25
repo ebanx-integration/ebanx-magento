@@ -57,6 +57,8 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 
                 if ($response->status == 'SUCCESS')
                 {
+                  try
+                  {
                     // Get the new status from Magento
                     $orderStatus = $this->_getOrderStatus($response->payment->status);
 
@@ -64,42 +66,68 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                     $order = Mage::getModel('sales/order')
                                 ->load($orderPayment->getParentId(), 'entity_id');
 
-                    // If the order exists
-                    if ($order->getRealOrderId())
+                    // Checks if the order exists
+                    if (!$order->getRealOrderId())
                     {
-                      // If payment status is CA - Canceled - AND order can be cancelled
-                      if ($response->payment->status == 'CA' && $order->canCancel())
-                      {
-                        // Cancel order
-                        $order->cancel();
+                      throw new Exception('Order cannot be found.');
+                    }
 
-                        // Set orderStatus to Generic canceled status - nothing more to do
-                        $orderStatus = 'canceled';
+                    // If payment status is CA - Canceled - AND order can be cancelled
+                    if ($response->payment->status == 'CA' && $order->canCancel())
+                    {
+                      if (!$order->canCancel())
+                      {
+                        throw new Exception('Order cannot be canceled, assuming already processed.');
                       }
 
-                      // If payment status is CO - Paid - AND order can be invoiced
-                      if ($response->payment->status == 'CO' && $order->canInvoice())
+                      // Cancel order
+                      $order->cancel();
+
+                      // Set orderStatus to Generic canceled status - nothing more to do
+                      $orderStatus = 'canceled';
+
+                        // Comment on order
+                      $order->addStatusHistoryComment('Automatically CANCELED by EBANX Notification.', false);
+                    }
+
+                    // If payment status is CO - Paid - AND order can be invoiced
+                    if ($response->payment->status == 'CO')
+                    {
+                      // If can NOT Invoice or order is not new
+                      if (!$order->canInvoice())
                       {
-                        // Prepare invoice
-                        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+                        throw new Exception('Order cannot be invoiced, assuming already processed.');
+                      }
 
-                        // Set capture case
-                        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
-                        $invoice->capture();
-                        $invoice->save();
+                      // Invoice
+                      $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+                      $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
+                      $invoice->register();
+                      $invoice->getOrder()->setCustomerNoteNotify(true); // notify customer
+                      $invoice->getOrder()->setIsInProcess(true);
 
-                        $transactionSave = Mage::getModel('core/resource_transaction')
+                      // Commit invoice to order
+                      $transactionSave =  Mage::getModel('core/resource_transaction')
                                   ->addObject($invoice)
                                   ->addObject($invoice->getOrder());
-                        $transactionSave->save();
-                      }
+                      $transactionSave->save();
 
-                      // Set status - TODO: Add notification to customer
-                      $order->addStatusToHistory($orderStatus, '', true)
-                            ->save();
-
-                      echo 'OK: payment ' . $hash . ' was updated<br>';
+                        // Comment on order
+                      $order->addStatusHistoryComment('Automatically INVOICED by EBANX Notification.', false);
+                      $order->getSendConfirmation(null);
+                      $order->sendNewOrderEmail();
                     }
+
+                    // Set status
+                    $order->addStatusToHistory($orderStatus, 'Status changed by EBANX Notification.', false)
+                          ->save();
+
+                    echo 'OK: payment ' . $hash . ' was updated<br>';
+                  }
+                  catch (Exception $e)
+                  {
+                    echo 'NOK: payment ' . $hash . ' could not update order, Exception: '  . $e->getMessage() . '<br>';
+                  }
                 }
                 else
                 {
