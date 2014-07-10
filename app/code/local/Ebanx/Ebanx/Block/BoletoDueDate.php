@@ -39,9 +39,6 @@ class Ebanx_Ebanx_Block_BoletoDueDate
         '1' => '1 day'
       , '2' => '2 days'
       , '3' => '3 days'
-      , '4' => '4 days'
-      , '5' => '5 days'
-      , '6' => '6 days'
     );
 
     public function toOptionArray()
