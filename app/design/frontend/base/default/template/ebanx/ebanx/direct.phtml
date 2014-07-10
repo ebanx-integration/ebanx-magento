@@ -131,7 +131,7 @@
           <p class="desc">Boleto bancário</p>
         </label>
       </div>
-      <? endif ?>
+      <?php endif ?>
 
       <?php if (in_array('credit_card', $this->getDirectMethods())): ?>
       <div class="payment-method payment-method-toggle">
@@ -141,7 +141,7 @@
           <p class="desc">Cartão de crédito</p>
         </label>
       </div>
-      <? endif ?>
+      <?php endif ?>
 
       <?php if (in_array('tef', $this->getDirectMethods())): ?>
       <div class="payment-method payment-method-toggle">
@@ -151,7 +151,7 @@
           <p class="desc">Trasferência bancária</p>
         </label>
       </div>
-      <? endif ?>
+      <?php endif ?>
     </div>
   </li>
 
@@ -233,9 +233,9 @@
     <div class="input-box">
       <div class="v-fix">
         <select id="ebanx_cc_installments" name="ebanx[installments]">
-          <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?></option>
+          <option value="1">1x <?php echo $this->getCurrencySymbol() ?><?php echo money_format("%i", $this->getPriceUpfront()) ?></option>
           <?php for ($i = 2; $i <= $this->getMaxInstallments(); $i++): ?>
-            <option value="<?= $i ?>"><?= $i ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceInterest() / floatval($i)) ?></option>
+            <option value="<?php echo $i ?>"><?php echo $i ?>x <?php echo $this->getCurrencySymbol() ?><?php echo money_format("%i", $this->getPriceInterest() / floatval($i)) ?></option>
           <?php endfor; ?>
         </select>
       </div>
@@ -257,7 +257,7 @@
         </select>
       </div>
     </li>
-  <? endif ?>
+  <?php endif ?>
 </ul>
 
 <script>

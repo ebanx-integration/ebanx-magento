@@ -31,6 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
+* 1.5.3: removed all short tags
 * 1.5.2: updated boleto due date limits to 1-3 days only
 * 1.5.1: fixed config.xml error, changed boleto_due_date to select
 * 1.5.0: refactored notification processing code, added boleto due date option
