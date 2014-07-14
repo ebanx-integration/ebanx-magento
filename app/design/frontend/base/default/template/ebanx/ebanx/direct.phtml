@@ -82,14 +82,14 @@
 
 <ul class="form-list" id="payment_ebanx_direct">
   <li>
-    <label for="ebanx_cpf" class="required"><em>*</em>CPF</label>
+    <label for="ebanx_cpf" class="required"><em>*</em><?php echo $this->__('CPF') ?></label>
     <div class="input-box">
       <input type="text" title="CPF" class="input-text required-entry validate-cpf" id="ebanx_cpf" name="ebanx[cpf]" value="<?php echo $this->getCpf() ?>">
     </div>
   </li>
 
   <li>
-    <label for="ebanx_birth_day" class="required"><em>*</em>Birth Date</label>
+    <label for="ebanx_birth_day" class="required"><em>*</em><?php echo $this->__('Birth Date') ?></label>
     <div class="input-box ebanx-birth">
       <div class="v-fix">
         <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
@@ -102,9 +102,9 @@
 
       <div class="v-fix">
         <select id="ebanx_birth_month" name="ebanx[birth_month]" class="month required-entry" autocomplete="off">
-          <option value="" <?php if (0 == $this->getBirthMonth()) echo 'selected="selected"' ?>>Month</option>
+          <option value="" <?php if (0 == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__('Month') ?></option>
           <?php for ($i = 1; $i <= 12; $i++): ?>
-            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo date("F", mktime(0, 0, 0, $i, 10)) ?></option>
+            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__(date("F", mktime(0, 0, 0, $i, 10))) ?></option>
           <?php endfor ?>
         </select>
       </div>
@@ -121,14 +121,14 @@
   </li>
 
   <li>
-    <label for="payment-method" class="required"><em>*</em>Payment Method</label>
+    <label for="payment-method" class="required"><em>*</em><?php echo $this->__('Payment Method') ?></label>
     <div class="input-box ebanx-method">
       <?php if (in_array('boleto', $this->getDirectMethods())): ?>
       <div class="payment-method active payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
         <label for="ebanx_method_boleto">
           <img src="<?php echo $this->getSkinUrl('images/ebanx_boleto.png') ?>"/>
-          <p class="desc">Boleto bancário</p>
+          <p class="desc"><?php echo $this->__('Ticket Banking') ?></p>
         </label>
       </div>
       <?php endif ?>
@@ -138,7 +138,7 @@
         <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
         <label for="ebanx_method_creditcard">
           <img src="<?php echo $this->getSkinUrl('images/ebanx_creditcard.png') ?>"/>
-          <p class="desc">Cartão de crédito</p>
+          <p class="desc"><?php echo $this->__('Credit Card') ?></p>
         </label>
       </div>
       <?php endif ?>
@@ -148,7 +148,7 @@
         <input type="radio" name="ebanx[method]" id="ebanx_method_tef" value="tef" />
         <label for="ebanx_method_tef">
           <img src="<?php echo $this->getSkinUrl('images/ebanx_tef.png') ?>" />
-          <p class="desc">Trasferência bancária</p>
+          <p class="desc"><?php echo $this->__('Bank Transfer') ?></p>
         </label>
       </div>
       <?php endif ?>
@@ -157,66 +157,66 @@
 
   <?php if (in_array('credit_card', $this->getDirectMethods())): ?>
     <li class="ebanx-cc-field">
-      <label for="ebanx_cc_name" class="required"><em>*</em>Name on Card</label>
+      <label for="ebanx_cc_name" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
       <div class="input-box">
         <input type="text" title="Name on Card" class="input-text required-entry" id="ebanx_cc_name" name="ebanx[cc_name]" value="" autocomplete="off">
       </div>
     </li>
 
     <li class="ebanx-cc-field">
-      <label for="ebanx_cc_number" class="required "><em>*</em>Credit Card Number</label>
+      <label for="ebanx_cc_number" class="required "><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
       <div class="input-box">
         <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-cc-ebanx validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
       </div>
     </li>
 
     <li class="ebanx-cc-field">
-      <label for="ebanx_cc_cvv" class="required"><em>*</em>Credit Card CVV</label>
+      <label for="ebanx_cc_cvv" class="required"><em>*</em><?php echo $this->__('Credit Card CVV') ?></label>
       <div class="input-box">
         <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text validate-length minimum-length-3 maximum-length-4" value="" autocomplete="off">
       </div>
     </li>
 
     <li class="ebanx-cc-field">
-      <label for="ebanx_cc_type" class="required"><em>*</em>Credit Card Type</label>
+      <label for="ebanx_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
       <div class="input-box">
         <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
-          <option value="" selected="selected">--Please Select--</option>
-            <option value="aura">Aura</option>
-            <option value="amex">American Express</option>
-            <option value="diners">Diners</option>
-            <option value="discover">Discover</option>
-            <option value="elo">Elo</option>
-            <option value="mastercard">MasterCard</option>
-            <option value="visa">Visa</option>
+          <option value="" selected="selected"><?php echo $this->__('Please Select') ?></option>
+            <option value="aura"><?php echo $this->__('Aura') ?></option>
+            <option value="amex"><?php echo $this->__('American Express') ?></option>
+            <option value="diners"><?php echo $this->__('Diners') ?></option>
+            <option value="discover"><?php echo $this->__('Discover') ?></option>
+            <option value="elo"><?php echo $this->__('Elo') ?></option>
+            <option value="mastercard"><?php echo $this->__('MasterCard') ?></option>
+            <option value="visa"><?php echo $this->__('Visa') ?></option>
           </select>
         </div>
     </li>
 
     <li class="ebanx-cc-field">
-      <label for="ebanx_cc_expiration_month" class="required"><em>*</em>Expiration Date</label>
+      <label for="ebanx_cc_expiration_month" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
       <div class="input-box">
         <div class="v-fix">
           <select id="ebanx_cc_expiration_month" name="ebanx[cc_expiration_month]" class="month required-entry" autocomplete="off">
-            <option value="" selected="selected">Month</option>
-            <option value="1">01 - January</option>
-            <option value="2">02 - February</option>
-            <option value="3">03 - March</option>
-            <option value="4">04 - April</option>
-            <option value="5">05 - May</option>
-            <option value="6">06 - June</option>
-            <option value="7">07 - July</option>
-            <option value="8">08 - August</option>
-            <option value="9">09 - September</option>
-            <option value="10">10 - October</option>
-            <option value="11">11 - November</option>
-            <option value="12">12 - December</option>
+            <option value="" selected="selected"><?php echo $this->__('Month') ?></option>
+            <option value="1">01 - <?php echo $this->__('January') ?></option>
+            <option value="2">02 - <?php echo $this->__('February') ?></option>
+            <option value="3">03 - <?php echo $this->__('March') ?></option>
+            <option value="4">04 - <?php echo $this->__('April') ?></option>
+            <option value="5">05 - <?php echo $this->__('May') ?></option>
+            <option value="6">06 - <?php echo $this->__('June') ?></option>
+            <option value="7">07 - <?php echo $this->__('July') ?></option>
+            <option value="8">08 - <?php echo $this->__('August') ?></option>
+            <option value="9">09 - <?php echo $this->__('September') ?></option>
+            <option value="10">10 - <?php echo $this->__('October') ?></option>
+            <option value="11">11 - <?php echo $this->__('November') ?></option>
+            <option value="12">12 - <?php echo $this->__('December') ?></option>
           </select>
         </div>
 
         <div class="v-fix">
           <select id="ebanx_cc_expiration_year" name="ebanx[cc_expiration_year]" class="year required-entry" autocomplete="off">
-            <option value="" selected="selected">Year</option>
+            <option value="" selected="selected"><?php echo $this->__('Year') ?></option>
             <?php for ($i = date('Y'); $i <= date('Y') + 20; $i++): ?>
               <option value="<?php echo $i ?>"><?php echo $i ?></option>
             <?php endfor ?>
@@ -228,14 +228,14 @@
 
   <?php if ($this->getMaxInstallments() > 200): ?>
   <li class="ebanx-cc-field" id="ebanx_installments">
-    <label for="ebanx_cc_installments" class="required"><em>*</em>Installments</label>
+    <label for="ebanx_cc_installments" class="required"><em>*</em><?php echo $this->__('Installments') ?></label>
 
     <div class="input-box">
       <div class="v-fix">
         <select id="ebanx_cc_installments" name="ebanx[installments]">
-          <option value="1">1x <?php echo $this->getCurrencySymbol() ?><?php echo money_format("%i", $this->getPriceUpfront()) ?></option>
+          <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?></option>
           <?php for ($i = 2; $i <= $this->getMaxInstallments(); $i++): ?>
-            <option value="<?php echo $i ?>"><?php echo $i ?>x <?php echo $this->getCurrencySymbol() ?><?php echo money_format("%i", $this->getPriceInterest() / floatval($i)) ?></option>
+            <option value="<?= $i ?>"><?= $i ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceInterest() / floatval($i)) ?></option>
           <?php endfor; ?>
         </select>
       </div>
@@ -245,15 +245,15 @@
 
   <?php if (in_array('tef', $this->getDirectMethods())): ?>
     <li class="ebanx-tef-field">
-      <label for="ebanx_tef_bank" class="required"><em>*</em>Bank</label>
+      <label for="ebanx_tef_bank" class="required"><em>*</em><?php echo $this->__('Bank') ?></label>
       <div class="input-box">
         <select id="ebanx_tef_bank" name="ebanx[tef_bank]" title="Credit Card Type" class="required-entry" autocomplete="off">
-          <option value="" selected="selected">--Please Select--</option>
-          <option value="banrisul">Banrisul</option>
-          <option value="bradesco">Bradesco</option>
-          <option value="bancodobrasil">Banco do Brasil</option>
-          <option value="hsbc">HSBC</option>
-          <option value="itau">Itaú</option>
+          <option value="" selected="selected"><?php echo $this->__('Please Select') ?></option>
+          <option value="banrisul"><?php echo $this->__('Banrisul') ?></option>
+          <option value="bradesco"><?php echo $this->__('Bradesco') ?></option>
+          <option value="bancodobrasil"><?php echo $this->__('Banco do Brasil') ?></option>
+          <option value="hsbc"><?php echo $this->__('HSBC') ?></option>
+          <option value="itau"><?php echo $this->__('Itaú') ?></option>
         </select>
       </div>
     </li>
@@ -454,7 +454,7 @@
 
     return false;
   }
-  Validation.add('validate-cpf', 'O CPF informado é inválido.', function(cpf) { return validateCpf(cpf); });
+  Validation.add('validate-cpf', "<?php echo $this->__('The supplied CPF is invalid')?>", function(cpf) { return validateCpf(cpf); });
 
   /**
    * Updates the credit card issuer depending on its number

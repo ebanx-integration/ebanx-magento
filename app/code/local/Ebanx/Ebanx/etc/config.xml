@@ -60,24 +60,34 @@
 	</global>
 
 	<frontend>
-    <routers>
-      <ebanx>
-        <use>standard</use>
-        <args>
-          <module>Ebanx_Ebanx</module>
-          <frontName>ebanx</frontName>
-        </args>
-      </ebanx>
-    </routers>
-
-    <layout>
-      <updates>
-        <ebanx>
-          <file>ebanx.xml</file>
-        </ebanx>
-      </updates>
-    </layout>
-  </frontend>
+		<translate>
+			<modules>
+				<Ebanx_Ebanx>
+					<files>
+						<default>Ebanx_Ebanx.csv</default>
+					</files>
+				</Ebanx_Ebanx>
+			</modules>
+		</translate>
+	
+		<routers>
+			<ebanx>
+				<use>standard</use>
+				<args>
+					<module>Ebanx_Ebanx</module>
+					<frontName>ebanx</frontName>
+				</args>
+			</ebanx>
+		</routers>
+				
+		<layout>
+			<updates>
+				<ebanx>
+					<file>ebanx.xml</file>
+				</ebanx>
+			</updates>
+		</layout>
+    </frontend>
 
 	<default>
 		<payment>
