@@ -5,7 +5,7 @@
 			<version>1.5.3</version>
 		</Ebanx_Ebanx>
 	</modules>
-
+	
 	<global>
 		<resources>
 			<ebanx_setup>
@@ -69,7 +69,7 @@
 				</Ebanx_Ebanx>
 			</modules>
 		</translate>
-	
+
 		<routers>
 			<ebanx>
 				<use>standard</use>
@@ -79,7 +79,7 @@
 				</args>
 			</ebanx>
 		</routers>
-				
+
 		<layout>
 			<updates>
 				<ebanx>
