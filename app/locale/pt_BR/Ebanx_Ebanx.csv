@@ -1,49 +1,49 @@
-'Your order has been received','A Sua Ordem foi Recebida'
-'Thank you for your purchase!','Obrigado pela sua Compra!'
-'Your order # is: %s.','A sua Ordem # é: %s.'
-'You will receive an order confirmation email with details of your order and a link to track its progress.','Receberá um email a confirmar a compra com os detalhes da sua encomenda e um link para monitorizar o seu progresso.'
-'Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.','Clique <a href="%s" onclick="this.target=\'_blank\'">aqui para imprimir</a> uma cópia da confirmação da sua compra.'
-'Your recurring payment profiles:','Seus perfis de pagamente frequentes:'
-'Payment profile # %s: "%s".','Perfil de Pagamento # %s: "%s".'
-'Continue Shopping','Continue a Comprar'
-'CPF','CPF'
-'Birth Date','Data de Nascimento'
-'Payment Method','Método de Pagamento'
-'Name on Card','Nome no seu Cartão'
-'Credit Card Number','Número de Cartão de Crédito/Débito'
-'Credit Card CVV','Código de Segurança do Cartão (3 últimos numeros encontrados na parte traseira do cartão ao lado da assinatura)'
-'Credit Card Type','Tipo de Cartão de Crédito/Débito'
-'Expiration Date','Data de Validade do Cartão'
-'Month','Mês'
-'January','Janeiro'
-'February','Fevereiro'
-'March','Março'
-'April','Abril'
-'May','Maio'
-'June','Junho'
-'July','Julho'
-'August','Agosto'
-'September','Setembro'
-'October','Outubro'
-'November','Novembro'
-'December','Dezembro'
-'Year','Ano'
-'Installments','Prestações'
-'Bank','Banco'
-'The supplied CPF is invalid','O CPF dado encontra-se inválido'
-'Ticket Banking','Boleto bancário'
-'Credit Card','Cartão de Crédito/Débito'
-'Bank Transfer','Trasferência bancária'
-'Please Select','Por Favor Selecione'
-'Aura','Aura'
-'American Express','American Express'
-'Diners','Diners'
-'Discover','Discover'
-'Elo','Elo'
-'MasterCard','MasterCard'
-'Visa','Visa'
-'Banrisul','Banrisul'
-'Bradesco','Bradesco'
-'Banco do Brasil','Banco do Brasil'
-'HSBC','HSBC'
-'Itaú','Itaú'
+"Your order has been received","Seu pedido foi recebido!"
+"Thank you for your purchase!","Obrigado por sua compra!"
+"Your order # is: %s.","A sua Ordem # é: %s."
+"You will receive an order confirmation email with details of your order and a link to track its progress.","Receberá um email a confirmar a compra com os detalhes da sua encomenda e um link para monitorar o seu progresso."
+"Click <a href=\"%s\" onclick="this.target=\"_blank\">here to print</a> a copy of your order confirmation.","Clique <a href=\"%s\" onclick="this.target=\"_blank\">aqui para imprimir</a> uma cópia da confirmação da sua compra."
+"Your recurring payment profiles:","Seus perfis de pagamento frequentes:"
+"Payment profile # %s: "%s".","Perfil de pagamento # %s: "%s"."
+"Continue Shopping","Continue a comprar"
+"CPF","CPF"
+"Birth Date","Data de nascimento"
+"Payment Method","Método de pagamento"
+"Name on Card","Nome no seu cartão"
+"Credit Card Number","Número do cartão"
+"Credit Card CVV","Código de segurança do cartão"
+"Credit Card Type","Bandeira do cartão"
+"Expiration Date","Data de validade do cartão"
+"Month","Mês"
+"January","Janeiro"
+"February","Fevereiro"
+"March","Março"
+"April","Abril"
+"May","Maio"
+"June","Junho"
+"July","Julho"
+"August","Agosto"
+"September","Setembro"
+"October","Outubro"
+"November","Novembro"
+"December","Dezembro"
+"Year","Ano"
+"Installments","Parcelas"
+"Bank","Banco"
+"The supplied CPF is invalid","O CPF informado é inválido"
+"Ticket Banking","Boleto bancário"
+"Credit Card","Cartão de crédito"
+"Bank Transfer","Trasferência bancária"
+"Please Select","Por favor selecione"
+"Aura","Aura"
+"American Express","American Express"
+"Diners","Diners"
+"Discover","Discover"
+"Elo","Elo"
+"MasterCard","MasterCard"
+"Visa","Visa"
+"Banrisul","Banrisul"
+"Bradesco","Bradesco"
+"Banco do Brasil","Banco do Brasil"
+"HSBC","HSBC"
+"Itaú","Itaú"
