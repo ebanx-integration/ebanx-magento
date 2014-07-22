@@ -1,49 +1,51 @@
-'Your order has been received','Your order has been received'
-'Thank you for your purchase!','Thank you for your purchase!'
-'Your order # is: %s.','Your order # is: %s.'
-'You will receive an order confirmation email with details of your order and a link to track its progress.','You will receive an order confirmation email with details of your order and a link to track its progress.'
-'Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.','Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.'
-'Your recurring payment profiles:','Your recurring payment profiles:'
-'Payment profile # %s: "%s".','Payment profile # %s: "%s".'
-'Continue Shopping','Continue Shopping'
-'CPF','CPF'
-'Birth Date','Birth Date'
-'Payment Method','Payment Method'
-'Name on Card','Name on Card'
-'Credit Card Number','Credit Card Number'
-'Credit Card CVV','Credit Card CVV'
-'Credit Card Type','Credit Card Type'
-'Expiration Date','Expiration Date'
-'Month','Month'
-'January','January'
-'February','February'
-'March','March'
-'April','April'
-'May','May'
-'June','June'
-'July','July'
-'August','August'
-'September','September'
-'October','October'
-'November','November'
-'December','December'
-'Year','Year'
-'Installments','Installments'
-'Bank','Bank'
-'The supplied CPF is invalid','The supplied CPF is invalid'
-'Ticket Banking','Ticket Banking'
-'Credit Card','Cartão de crédito'
-'Bank Transfer','Bank Transfer'
-'Please Select','Please Select'
-'Aura','Aura'
-'American Express','American Express'
-'Diners','Diners'
-'Discover','Discover'
-'Elo','Elo'
-'MasterCard','MasterCard'
-'Visa','Visa'
-'Banrisul','Banrisul'
-'Bradesco','Bradesco'
-'Banco do Brasil','Banco do Brasil'
-'HSBC','HSBC'
-'Itaú','Itaú'
+"Your order has been received","Your order has been received"
+"Thank you for your purchase!","Thank you for your purchase!"
+"Your order # is: %s.","Your order # is: %s."
+"You will receive an order confirmation email with details of your order and a link to track its progress.","You will receive an order confirmation email with details of your order and a link to track its progress."
+"Click <a href=\"%s\" onclick=\"this.target='_blank'\">here to print</a> a copy of your order confirmation.","Click <a href=\"%s\" onclick=\"this.target='_blank'\">here to print</a> a copy of your order confirmation."
+"Your recurring payment profiles:","Your recurring payment profiles:"
+"Payment profile # %s: \"%s\".","Payment profile # %s: \"%s\"."
+"Continue Shopping","Continue Shopping"
+"CPF","CPF"
+"Birth Date","Birth Date"
+"Payment Method","Payment Method"
+"Name on Card","Name on Card"
+"Credit Card Number","Credit Card Number"
+"Credit Card CVV","Credit Card CVV"
+"Credit Card Type","Credit Card Type"
+"Expiration Date","Expiration Date"
+"Day","Day"
+"Month","Month"
+"Year","Year"
+"January","January"
+"February","February"
+"March","March"
+"April","April"
+"May","May"
+"June","June"
+"July","July"
+"August","August"
+"September","September"
+"October","October"
+"November","November"
+"December","December"
+"Year","Year"
+"Installments","Installments"
+"Bank","Bank"
+"The supplied CPF is invalid","The supplied CPF is invalid"
+"Ticket Banking","Ticket Banking"
+"Credit Card","Cartão de crédito"
+"Bank Transfer","Bank Transfer"
+"Please Select","Please Select"
+"Aura","Aura"
+"American Express","American Express"
+"Diners","Diners"
+"Discover","Discover"
+"Elo","Elo"
+"MasterCard","MasterCard"
+"Visa","Visa"
+"Banrisul","Banrisul"
+"Bradesco","Bradesco"
+"Banco do Brasil","Banco do Brasil"
+"HSBC","HSBC"
+"Itaú","Itaú"

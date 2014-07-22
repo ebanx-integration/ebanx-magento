@@ -93,7 +93,7 @@
     <div class="input-box ebanx-birth">
       <div class="v-fix">
         <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
-          <option value="" <?php if (0 == $this->getBirthDay()) echo 'selected="selected"' ?>>Day</option>
+          <option value="" <?php if (0 == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $this->__('Day') ?></option>
           <?php for ($i = 1; $i <= 31; $i++): ?>
             <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $i ?></option>
           <?php endfor ?>
@@ -111,7 +111,7 @@
 
       <div class="v-fix">
         <select id="ebanx_birth_year" name="ebanx[birth_year]" class="year required-entry" autocomplete="off">
-          <option value="" <?php if (0 == $this->getBirthYear()) echo 'selected="selected"' ?>>Year</option>
+          <option value="" <?php if (0 == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $this->__('Year') ?></option>
           <?php for ($i = date('Y') - 16; $i > 1920; $i--): ?>
             <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $i ?></option>
           <?php endfor ?>
