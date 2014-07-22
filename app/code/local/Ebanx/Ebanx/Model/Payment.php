@@ -125,6 +125,10 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
         $streetNumber = preg_replace('/[\D]/', '', $order->getBillingAddress()->getData('street'));
         $streetNumber = ($streetNumber > 0) ? $streetNumber : '1';
 
+        // Defines the order ID, if in test append time() to avoid errors
+        $testMode = (intval(Mage::getStoreConfig('payment/ebanx/testing')) == 1);
+        $orderId  = $order->getIncrementId() . ($testMode ? time() : '');
+
         $params = array(
             'mode'      => 'full'
           , 'operation' => 'request'
@@ -137,7 +141,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
               , 'currency_code'     => $order->getBaseCurrencyCode()
               , 'amount_total'      => $order->getBaseGrandTotal()
               , 'payment_type_code' => $ebanx['method']
-              , 'merchant_payment_code' => $order->getIncrementId()
+              , 'merchant_payment_code' => $orderId
               , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
               , 'address'           => $order->getBillingAddress()->getData('street')
               , 'street_number'     => $streetNumber
@@ -180,6 +184,17 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
           $dueDays = intval(Mage::getStoreConfig('payment/ebanx/boleto_due_date'));
           $dueDate = date('d/m/Y', strtotime("+{$dueDays} day", time()));
           $params['payment']['due_date'] = $dueDate;
+        }
+
+        // If has installments, adjust total
+        if (isset($ebanx['installments']))
+        {
+          if (intval($ebanx['installments']) > 1)
+          {
+            $interestRate = floatval(Mage::getStoreConfig('payment/ebanx/interest_installments'));
+            $params['payment']['instalments']  = intval($ebanx['installments']);
+            $params['payment']['amount_total'] = ($order->getBaseGrandTotal() * (100 + $interestRate)) / 100.0;
+          }
         }
 
         try

@@ -87,23 +87,9 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
 
         // Convert the total to BRL (approximation)
         $total = $this->getFinalValue();
-        switch ($currencyCode)
+        if (($total / 20) < $maxInstallments)
         {
-          case 'USD':
-            $totalReal = $total * 2.5;
-            break;
-          case 'EUR':
-            $totalReal = $total * 3.4;
-            break;
-          case 'BRL':
-          default:
-            $totalReal = $total;
-            break;
-        }
-
-        if (($totalReal / 20) < $maxInstallments)
-        {
-          $maxInstallments = floor($totalReal / 20);
+          $maxInstallments = floor($total / 20);
         }
 
         $installmentCards = array('Visa', 'Mastercard');

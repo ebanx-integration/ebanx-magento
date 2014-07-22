@@ -31,6 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
+* 1.6.0: added installments
 * 1.5.4: added translations
 * 1.5.3: removed all short tags
 * 1.5.2: updated boleto due date limits to 1-3 days only
