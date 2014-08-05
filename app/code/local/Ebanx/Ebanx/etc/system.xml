@@ -140,6 +140,16 @@
               <show_in_store>0</show_in_store>
             </boleto_due_date>
 
+            <paymentcurrency translate="label">
+              <label>Payment currency</label>
+              <frontend_type>select</frontend_type>
+              <source_model>Ebanx_Ebanx_Block_PaymentCurrency</source_model>
+              <sort_order>13</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </paymentcurrency>
+
             <allowspecific translate="label">
               <label>Payment from Applicable Countries</label>
               <frontend_type>select</frontend_type>

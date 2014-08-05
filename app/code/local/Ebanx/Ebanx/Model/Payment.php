@@ -129,6 +129,20 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
         $testMode = (intval(Mage::getStoreConfig('payment/ebanx/testing')) == 1);
         $orderId  = $order->getIncrementId() . ($testMode ? time() : '');
 
+        // Gets the currency code and total
+        // Backend/base currency
+        if (Mage::getStoreConfig('payment/ebanx/paymentcurrency') == 'base')
+        {
+          $amountTotal  = $order->getBaseGrandTotal();
+          $currencyCode = $order->getBaseCurrencyCode();
+        }
+        else
+        // Frontend currency
+        {
+          $amountTotal  = $order->getGrandTotal();
+          $currencyCode = $order->getOrderCurrency()->getCurrencyCode();
+        }
+
         $params = array(
             'mode'      => 'full'
           , 'operation' => 'request'
@@ -138,8 +152,8 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
               , 'birth_date'        => $birthDate
               , 'email'             => $order->getCustomerEmail()
               , 'phone_number'      => $order->getBillingAddress()->getTelephone()
-              , 'currency_code'     => $order->getBaseCurrencyCode()
-              , 'amount_total'      => $order->getBaseGrandTotal()
+              , 'currency_code'     => $currencyCode
+              , 'amount_total'      => $amountTotal
               , 'payment_type_code' => $ebanx['method']
               , 'merchant_payment_code' => $orderId
               , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
@@ -193,7 +207,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
           {
             $interestRate = floatval(Mage::getStoreConfig('payment/ebanx/interest_installments'));
             $params['payment']['instalments']  = intval($ebanx['installments']);
-            $params['payment']['amount_total'] = ($order->getBaseGrandTotal() * (100 + $interestRate)) / 100.0;
+            $params['payment']['amount_total'] = ($amountTotal * (100 + $interestRate)) / 100.0;
           }
         }
 
