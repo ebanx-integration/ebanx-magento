@@ -103,7 +103,7 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
                       $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
                       $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
                       $invoice->register();
-                      $invoice->getOrder()->setCustomerNoteNotify(true); // notify customer
+                      $invoice->getOrder()->setCustomerNoteNotify(true);
                       $invoice->getOrder()->setIsInProcess(true);
 
                       // Commit invoice to order
@@ -114,7 +114,8 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 
                         // Comment on order
                       $order->addStatusHistoryComment('Automatically INVOICED by EBANX Notification.', false);
-                      $order->getSendConfirmation(null);
+                      $order->getSendConfirmation();
+                      $order->setEmailSent(true);
                       $order->sendNewOrderEmail();
                     }
 
