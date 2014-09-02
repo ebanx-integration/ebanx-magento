@@ -30,12 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
-require_once 'utils.php';
+/**
+ * Holds the values of the installment modes
+ */
+class Ebanx_Ebanx_Block_InstallmentsMode
+{
+    protected $_options = array(
+        'simple'   => 'Simple interest'
+      , 'compound' => 'Compound interest'
+    );
 
-$ebanxConfig = Mage::getStoreConfig('payment/ebanx');
-\Ebanx\Config::set(array(
-    'integrationKey' => $ebanxConfig['integration_key']
-  , 'testMode'       => (intval($ebanxConfig['testing']) == 1)
-  , 'directMode'     => true
-));
+    public function toOptionArray()
+    {
+        $arr = array();
+
+        foreach ($this->_options as $value => $label)
+        {
+            $arr[] = array(
+                'value' => $value
+              , 'label' => $label
+            );
+        }
+
+        return $arr;
+    }
+}

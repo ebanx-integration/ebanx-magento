@@ -30,12 +30,35 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
-require_once 'utils.php';
+/**
+ * Helper methods
+ */
+class Ebanx_Ebanx_Utils
+{
+    public static function calculateTotalWithInterest($interestMode, $interestRate, $orderTotal, $installments)
+    {
+        switch ($interestMode) {
+          case 'compound':
+            $total = self::calculateTotalCompoundInterest($interestRate, $orderTotal, $installments);
+            break;
+          case 'simple':
+            $total = self::calculateTotalSimpleInterest($interestRate, $orderTotal, $installments);
+            break;
+          default:
+            throw new Exception("Interest mode {$interestMode} is unsupported.");
+            break;
+        }
 
-$ebanxConfig = Mage::getStoreConfig('payment/ebanx');
-\Ebanx\Config::set(array(
-    'integrationKey' => $ebanxConfig['integration_key']
-  , 'testMode'       => (intval($ebanxConfig['testing']) == 1)
-  , 'directMode'     => true
-));
+        return $total;
+    }
+
+    protected static function calculateTotalSimpleInterest($interestRate, $orderTotal, $installments)
+    {
+        return (floatval($interestRate / 100) * floatval($orderTotal) * intval($installments)) + floatval($orderTotal);
+    }
+
+    protected static function calculateTotalCompoundInterest($interestRate, $orderTotal, $installments)
+    {
+        return $orderTotal * pow((1.0 + floatval($interestRate / 100)), $installments);
+    }
+}

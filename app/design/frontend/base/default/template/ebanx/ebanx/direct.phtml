@@ -235,9 +235,9 @@
       <div class="v-fix">
         <select id="ebanx_cc_installments" name="ebanx[installments]">
           <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?></option>
-          <?php for ($i = 2; $i <= $this->getMaxInstallments(); $i++): ?>
-            <option value="<?= $i ?>"><?= $i ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceInterest() / floatval($i)) ?></option>
-          <?php endfor; ?>
+          <?php foreach ($this->getInstallments() as $value => $total): ?>
+            <option value="<?= $value ?>"><?= $value ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $total / $value) ?></option>
+          <?php endforeach ?>
         </select>
       </div>
     </div>

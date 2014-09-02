@@ -156,6 +156,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
               , 'amount_total'      => $amountTotal
               , 'payment_type_code' => $ebanx['method']
               , 'merchant_payment_code' => $orderId
+              , 'order_number'      => $order->getIncrementId()
               , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
               , 'address'           => $order->getBillingAddress()->getData('street')
               , 'street_number'     => $streetNumber
@@ -206,8 +207,15 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
           if (intval($ebanx['installments']) > 1)
           {
             $interestRate = floatval(Mage::getStoreConfig('payment/ebanx/interest_installments'));
+            $interestMode = Mage::getStoreConfig('payment/ebanx/installments_mode');
+
             $params['payment']['instalments']  = intval($ebanx['installments']);
-            $params['payment']['amount_total'] = ($amountTotal * (100 + $interestRate)) / 100.0;
+            $params['payment']['amount_total'] = Ebanx_Ebanx_Utils::calculateTotalWithInterest(
+                                                      $interestMode
+                                                    , $interestRate
+                                                    , $amountTotal
+                                                    , intval($ebanx['installments'])
+                                                  );
           }
         }
 

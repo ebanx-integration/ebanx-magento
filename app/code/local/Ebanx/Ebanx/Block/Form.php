@@ -77,19 +77,29 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
         $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
 
         $installmentsActive = $ebanxConfig['active_installments'];
-        $maxInstallments    = intval($ebanxConfig['maximum_installments']);
 
-        // Get the final value with interest
-        $priceInterest = ($this->getFinalValue() * (100 + floatval($ebanxConfig['interest_installments']))) / 100.0;
-
-        // Enforces minimum installment value (R$20)
         $currencyCode =  strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode());
 
-        // Convert the total to BRL (approximation)
-        $total = $this->getFinalValue();
-        if (($total / 20) < $maxInstallments)
+        // Enforces minimum installment value (R$20)
+        $maxInstallments  = intval($ebanxConfig['maximum_installments']);
+        $interestRate     = $ebanxConfig['interest_installments'];
+        $interestMode     = $ebanxConfig['installments_mode'];
+        $total            = $this->getFinalValue();
+        $installmentsOptions = array();
+
+        // Setup installment options
+        for ($i = 2; $i <= $maxInstallments; $i++)
         {
-          $maxInstallments = floor($total / 20);
+            // Minimum amount per installment is R$20
+            if (($total / $i) >= 20)
+            {
+                $installmentsOptions[$i] = Ebanx_Ebanx_Utils::calculateTotalWithInterest(
+                                                  $interestMode
+                                                , $interestRate
+                                                , $total
+                                                , $i
+                                            );
+            }
         }
 
         $installmentCards = array('Visa', 'Mastercard');
@@ -118,6 +128,7 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
            'installments_active' => $installmentsActive
          , 'max_installments'    => $maxInstallments
          , 'installment_cards'   => $installmentCards
+         , 'installments'        => $installmentsOptions
          , 'price_upfront'       => $this->getFinalValue()
          , 'price_interest'      => $priceInterest
          , 'currency_symbol'     => $currencySymbol
