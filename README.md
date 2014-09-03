@@ -31,6 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
+* 1.10.0: implemented installments, added custom currency converter
 * 1.9.0: send order notifications, added Hipercard
 * 1.8.0: implemented option to get backend or frontend currency for payment
 * 1.7.0: translated error messages
