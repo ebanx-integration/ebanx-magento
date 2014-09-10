@@ -204,7 +204,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
         // If has installments, adjust total
         if (isset($ebanx['installments']))
         {
-          if (intval($ebanx['installments']) > 1)
+          if ($ebanx['method'] == 'creditcard' && intval($ebanx['installments']) > 1)
           {
             $interestRate = floatval(Mage::getStoreConfig('payment/ebanx/interest_installments'));
             $interestMode = Mage::getStoreConfig('payment/ebanx/installments_mode');
