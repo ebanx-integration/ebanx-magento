@@ -130,7 +130,6 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
          , 'installment_cards'   => $installmentCards
          , 'installments'        => $installmentsOptions
          , 'price_upfront'       => $this->getFinalValue()
-         , 'price_interest'      => $priceInterest
          , 'currency_symbol'     => $currencySymbol
          , 'cpf'                 => $cpf
          , 'birth_day'           => $birthDay

@@ -12,71 +12,30 @@
 #payment_ebanx_direct .cvv {
   width: 30px;
 }
-.ebanx-cc-field.
+.ebanx-cc-field,
 .ebanx-tef-field {
   display: none;
 }
 .ebanx-method {
   overflow: hidden;
-  width: 600px !important;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin: 5px 0 0 0;
 }
 .ebanx-method .payment-method {
   float: left;
   display: block;
   overflow: hidden;
-  width: 120px;
-  height: 130px;
-  margin: 10px 20px 0 0;
+  margin: 0 20px 0 0;
 }
 .ebanx-method .payment-method input {
   float: left;
   clear: left;
-  /*margin: 27px 3px 0 0;*/
-  display: none;
+  margin: 4px 5px 0 0;
 }
 .ebanx-method .payment-method label {
   cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  width: 78px;
-  height: 88px;
-  padding: 20px;
-  text-align: center;
-  overflow: hidden;
-  position: relative;
-}
-.ebanx-method .payment-method.active label,
-.ebanx-method .payment-method label:hover {
-  border-color: #f26624;
-}
-.ebanx-method .payment-method.active label:before {
-  position: absolute;
-  z-index: 100;
-  top: 0;
-  left: -3.125em;
-  content: '';
-  width: 0;
-  height: 0;
-  border-left: 3em solid transparent;
-  border-right: 3em solid transparent;
-  border-top: 3em solid #f26624;
-}
-.ebanx-method .payment-method label img {
-  margin: 0 auto 10px;
-}
-.ebanx-method .payment-method label .desc {
-  font-size: 1.1em;
-  line-height: 1.1em;
-}
-.ebanx-method .payment-method.active label .desc:before {
-  content: '✓';
-  font-size: 20px;
-  color: #fff;
-  position: absolute;
-  top: 6px;
-  left: 2px;
-  z-index: 101;
 }
 </style>
 
@@ -126,30 +85,21 @@
       <?php if (in_array('boleto', $this->getDirectMethods())): ?>
       <div class="payment-method active payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
-        <label for="ebanx_method_boleto">
-          <img src="<?php echo $this->getSkinUrl('images/ebanx_boleto.png') ?>"/>
-          <p class="desc"><?php echo $this->__('Ticket Banking') ?></p>
-        </label>
+        <label for="ebanx_method_boleto"><?php echo $this->__('Ticket Banking') ?></label>
       </div>
       <?php endif ?>
 
       <?php if (in_array('credit_card', $this->getDirectMethods())): ?>
       <div class="payment-method payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
-        <label for="ebanx_method_creditcard">
-          <img src="<?php echo $this->getSkinUrl('images/ebanx_creditcard.png') ?>"/>
-          <p class="desc"><?php echo $this->__('Credit Card') ?></p>
-        </label>
+        <label for="ebanx_method_creditcard"><?php echo $this->__('Credit Card') ?></label>
       </div>
       <?php endif ?>
 
       <?php if (in_array('tef', $this->getDirectMethods())): ?>
       <div class="payment-method payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_tef" value="tef" />
-        <label for="ebanx_method_tef">
-          <img src="<?php echo $this->getSkinUrl('images/ebanx_tef.png') ?>" />
-          <p class="desc"><?php echo $this->__('Bank Transfer') ?></p>
-        </label>
+        <label for="ebanx_method_tef"><?php echo $this->__('Bank Transfer') ?></label>
       </div>
       <?php endif ?>
     </div>

@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Ebanx_Ebanx>
-      <version>1.10.0</version>
+      <version>1.11.0</version>
     </Ebanx_Ebanx>
   </modules>
 
@@ -106,7 +106,7 @@
         <model>ebanx/payment</model>
         <group>ebanx</group>
         <active>1</active>
-        <title>EBANX (Boleto Bancário, HSBC, Itaú, Bradesco, Banco do Brasil, Visa, Mastercard)</title>
+        <title>Boleto bancário, transferência bancária e cartão de crédito</title>
         <payment_action>authorize</payment_action>
         <testing>1</testing>
         <direct>0</direct>
@@ -120,7 +120,7 @@
         <maximum_installments>12</maximum_installments>
         <installments_mode>compound</installments_mode>
         <interest_installments>0.0</interest_installments>
-        <title_checkout>EBANX (Boleto Bancário, Itaú, Bradesco, Banco do Brasil)</title_checkout>
+        <title_checkout>Boleto bancário, transferência bancária e cartão de crédito</title_checkout>
         <direct_payment_methods>boleto,tef</direct_payment_methods>
         <boleto_due_date>3</boleto_due_date>
         <paymentcurrency>base</paymentcurrency>
