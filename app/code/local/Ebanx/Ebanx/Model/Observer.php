@@ -51,9 +51,14 @@ class Ebanx_Ebanx_Model_Observer
 
         // Save CPF and birthdate
         $customer = Mage::getSingleton('customer/session')->getCustomer();
-        $customer->setEbanxCpf($ebanx['cpf']);
-        $customer->setEbanxBirthdate($birthDate);
-        $customer->save();
+
+        // Checks if the customer is already persistef before saving the custom fields
+        if ($customer->getEmail())
+        {
+            $customer->setEbanxCpf($ebanx['cpf']);
+            $customer->setEbanxBirthdate($birthDate);
+            $customer->save();
+        }
 
         return $this;
     }

@@ -1,9 +1,14 @@
 <style type="text/css">
 #payment_ebanx_direct {
     display: none;
+    margin: 0;
+    padding: 0 0 0 20px;
 }
 .ebanx-birth {
   width: 350px !important;
+}
+.ebanx-birth select {
+  float: left;
 }
 .ebanx-birth .day {
   width: 60px;
@@ -50,32 +55,26 @@
   <li>
     <label for="ebanx_birth_day" class="required"><em>*</em><?php echo $this->__('Birth Date') ?></label>
     <div class="input-box ebanx-birth">
-      <div class="v-fix">
-        <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
-          <option value="" <?php if (0 == $this->getBirthDay()) echo 'selected="selected"' ?>>Day</option>
-          <?php for ($i = 1; $i <= 31; $i++): ?>
-            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $i ?></option>
-          <?php endfor ?>
-        </select>
-      </div>
+      <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
+        <option value="" <?php if (0 == $this->getBirthDay()) echo 'selected="selected"' ?>>Day</option>
+        <?php for ($i = 1; $i <= 31; $i++): ?>
+          <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $i ?></option>
+        <?php endfor ?>
+      </select>
 
-      <div class="v-fix">
-        <select id="ebanx_birth_month" name="ebanx[birth_month]" class="month required-entry" autocomplete="off">
-          <option value="" <?php if (0 == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__('Month') ?></option>
-          <?php for ($i = 1; $i <= 12; $i++): ?>
-            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__(date("F", mktime(0, 0, 0, $i, 10))) ?></option>
-          <?php endfor ?>
-        </select>
-      </div>
+      <select id="ebanx_birth_month" name="ebanx[birth_month]" class="month required-entry" autocomplete="off">
+        <option value="" <?php if (0 == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__('Month') ?></option>
+        <?php for ($i = 1; $i <= 12; $i++): ?>
+          <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__(date("F", mktime(0, 0, 0, $i, 10))) ?></option>
+        <?php endfor ?>
+      </select>
 
-      <div class="v-fix">
-        <select id="ebanx_birth_year" name="ebanx[birth_year]" class="year required-entry" autocomplete="off">
-          <option value="" <?php if (0 == $this->getBirthYear()) echo 'selected="selected"' ?>>Year</option>
-          <?php for ($i = date('Y') - 16; $i > 1920; $i--): ?>
-            <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $i ?></option>
-          <?php endfor ?>
-        </select>
-      </div>
+      <select id="ebanx_birth_year" name="ebanx[birth_year]" class="year required-entry" autocomplete="off">
+        <option value="" <?php if (0 == $this->getBirthYear()) echo 'selected="selected"' ?>>Year</option>
+        <?php for ($i = date('Y') - 16; $i > 1920; $i--): ?>
+          <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $i ?></option>
+        <?php endfor ?>
+      </select>
     </div>
   </li>
 
