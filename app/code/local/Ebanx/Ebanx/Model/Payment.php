@@ -129,6 +129,12 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
       $testMode = (intval(Mage::getStoreConfig('payment/ebanx/testing')) == 1);
       $orderId  = $order->getIncrementId() . ($testMode ? time() : '');
 
+      // Cut order ID in test mode
+      if (strlen($orderId) > 20 && $testMode)
+      {
+        $orderId = substr($orderId, 0, 20);
+      }
+
       // Gets the currency code and total
       // Backend/base currency
       if (Mage::getStoreConfig('payment/ebanx/paymentcurrency') == 'base')
