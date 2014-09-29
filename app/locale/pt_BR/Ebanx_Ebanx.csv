@@ -4,7 +4,7 @@
 "You will receive an order confirmation email with details of your order and a link to track its progress.","Receberá um email a confirmar a compra com os detalhes da sua encomenda e um link para monitorar o seu progresso."
 "Click <a href=\"%s\" onclick="this.target=\"_blank\">here to print</a> a copy of your order confirmation.","Clique <a href=\"%s\" onclick="this.target=\"_blank\">aqui para imprimir</a> uma cópia da confirmação da sua compra."
 "Your recurring payment profiles:","Seus perfis de pagamento frequentes:"
-"Payment profile # %s: "%s".","Perfil de pagamento # %s: "%s"."
+"Payment profile # %s: \"%s\".","Perfil de pagamento # %s: \"%s\"."
 "Continue Shopping","Continue a comprar"
 "CPF","CPF"
 "Birth Date","Data de nascimento"
