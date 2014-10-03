@@ -84,21 +84,21 @@
       <?php if (in_array('boleto', $this->getDirectMethods())): ?>
       <div class="payment-method active payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_boleto" value="boleto" checked="checked" />
-        <label for="ebanx_method_boleto"><?php echo $this->__('Ticket Banking') ?></label>
+        <label for="ebanx_method_boleto">Boleto bancário</label>
       </div>
       <?php endif ?>
 
       <?php if (in_array('credit_card', $this->getDirectMethods())): ?>
       <div class="payment-method payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_creditcard" value="creditcard" />
-        <label for="ebanx_method_creditcard"><?php echo $this->__('Credit Card') ?></label>
+        <label for="ebanx_method_creditcard">Cartão de crédito</label>
       </div>
       <?php endif ?>
 
       <?php if (in_array('tef', $this->getDirectMethods())): ?>
       <div class="payment-method payment-method-toggle">
         <input type="radio" name="ebanx[method]" id="ebanx_method_tef" value="tef" />
-        <label for="ebanx_method_tef"><?php echo $this->__('Bank Transfer') ?></label>
+        <label for="ebanx_method_tef">Transferência bancária</label>
       </div>
       <?php endif ?>
     </div>
