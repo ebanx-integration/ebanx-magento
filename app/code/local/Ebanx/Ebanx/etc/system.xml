@@ -5,7 +5,7 @@
 			<groups>
 				<ebanx translate="label" module="ebanx">
 					<label>EBANX</label>
-					<comment>Boleto Bancário, TEF, Domestic Brazilian Credit Cards</comment>
+					<comment>Payments for Latin American customers</comment>
 					<sort_order>700</sort_order>
 					<show_in_default>1</show_in_default>
 					<show_in_website>1</show_in_website>

@@ -49,9 +49,14 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
     protected function _beforeToHtml()
     {
         $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
+        $address = Mage::getSingleton('checkout/cart')->getQuote()->getBillingAddress();
+        $country = strtolower($address->getCountry());
 
-        $this->setTemplate('ebanx/ebanx/direct.phtml');
-        $this->_prepareForm();
+        if ($country == 'br')
+        {
+            $this->setTemplate('ebanx/ebanx/direct.phtml');
+            $this->_prepareForm();
+        }
 
         return parent::_beforeToHtml();
     }

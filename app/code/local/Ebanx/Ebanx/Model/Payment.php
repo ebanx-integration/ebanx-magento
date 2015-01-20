@@ -111,6 +111,131 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
   {
       parent::authorize($payment, $amount);
 
+      $country = strtolower($payment->getOrder()->getBillingAddress()->getCountry());
+
+      if ($country == 'br')
+      {
+        $this->authorizeDirectApi($payment, $amount);
+      }
+      else
+      {
+        $this->authorizeCheckout($payment, $amount);
+      }
+  }
+
+  /**
+   * Authorizes a transaction using EBANX Direct
+   * @param  Varien_Object $payment
+   * @param  float $amount
+   * @return Mage_Payment_Model_Method_Abstract
+   */
+  public function authorizeCheckout(Varien_Object $payment, $amount)
+  {
+    $session = Mage::getSingleton('checkout/session');
+    $order   = $payment->getOrder();
+    $ebanx   = Mage::app()->getRequest()->getParam('ebanx');
+
+    Mage::log('Authorizing order [' . $order->getApiOrderId() . ']');
+
+    // Street number workaround
+    $streetNumber = preg_replace('/[\D]/', '', $order->getBillingAddress()->getData('street'));
+    $streetNumber = ($streetNumber > 0) ? $streetNumber : '1';
+
+    // Defines the order ID, if in test append time() to avoid errors
+    $testMode = (intval(Mage::getStoreConfig('payment/ebanx/testing')) == 1);
+    $orderId  = $order->getIncrementId() . ($testMode ? time() : '');
+
+    // Cut order ID in test mode
+    if (strlen($orderId) > 20 && $testMode)
+    {
+      $orderId = substr($orderId, 0, 20);
+    }
+
+    // Gets the currency code and total
+    // Backend/base currency
+    if (Mage::getStoreConfig('payment/ebanx/paymentcurrency') == 'base')
+    {
+      $amountTotal  = $order->getBaseGrandTotal();
+      $currencyCode = $order->getBaseCurrencyCode();
+    }
+    else
+    // Frontend currency
+    {
+      $amountTotal  = $order->getGrandTotal();
+      $currencyCode = $order->getOrderCurrency()->getCurrencyCode();
+    }
+
+    // On guest checkout, get billing email address
+    $email = $order->getCustomerEmail() ?: $order->getBillingAddress()->getEmail();
+
+    $params = array(
+          'name'              => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname()
+        , 'email'             => $email
+        , 'phone_number'      => $order->getBillingAddress()->getTelephone()
+        , 'currency_code'     => $currencyCode
+        , 'amount'            => $amountTotal
+        , 'payment_type_code' => '_all'
+        , 'merchant_payment_code' => $orderId
+        , 'order_number'      => $order->getIncrementId()
+        , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
+        , 'address'           => $order->getBillingAddress()->getData('street')
+        , 'street_number'     => $streetNumber
+        , 'city'              => $order->getBillingAddress()->getData('city')
+        , 'state'             => $order->getBillingAddress()->getRegionCode()
+        , 'country'           => strtolower($order->getBillingAddress()->getCountry())
+    );
+
+    try
+    {
+        \Ebanx\Config::setDirectMode(false);
+        $response = \Ebanx\Ebanx::doRequest($params);
+
+        Mage::log('Authorizing order [' . $order->getIncrementId() . '] - calling EBANX');
+
+        if (!empty($response) && $response->status == 'SUCCESS')
+        {
+            $hash = $response->payment->hash;
+
+            // Add the EBANX hash in the order data
+            $order->getPayment()
+                  ->setData('ebanx_hash', $hash)
+                  ->save();
+
+            // Redirect to bank page if the client chose TEF
+            if (isset($response->redirect_url))
+            {
+              $_SESSION['ebxRedirectUrl'] = $response->redirect_url;
+            }
+            // Redirect to EBANX success page on client store
+            else
+            {
+              $_SESSION['ebxRedirectUrl'] = Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash;
+            }
+
+            Mage::log('Authorizing order [' . $order->getIncrementId() . '] - success');
+        }
+        else
+        {
+            Mage::log('Authorizing order [' . $order->getIncrementId() . '] - error: ' . $response->status_message);
+            Mage::throwException($this->getEbanxErrorMessage($response->status_code));
+        }
+    }
+    catch (Exception $e)
+    {
+        Mage::throwException($e->getMessage());
+    }
+
+    return $this;
+  }
+
+    /**
+     * Authorizes a transaction using EBANX Direct
+     * @param  Varien_Object $payment
+     * @param  float $amount
+     * @return Mage_Payment_Model_Method_Abstract
+     */
+    public function authorizeDirectApi(Varien_Object $payment, $amount)
+    {
       $session = Mage::getSingleton('checkout/session');
       $order   = $payment->getOrder();
       $ebanx   = Mage::app()->getRequest()->getParam('ebanx');
@@ -278,8 +403,6 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
    */
   public function refund(Varien_Object $payment, $amount)
   {
-      parent::refund($payment, $amount);
-
       $hash = $payment->getData('ebanx_hash');
       Mage::log('Refund order ' . $hash);
 
@@ -287,10 +410,10 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
           'hash'      => $hash
         , 'operation' => 'request'
         , 'amount'    => $amount
-        , 'description' => 'Order re'
+        , 'description' => 'Order refunded'
       ));
 
-      return $this;
+      return parent::refund($payment, $amount);
   }
 
     /**

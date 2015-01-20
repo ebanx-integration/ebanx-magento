@@ -45,19 +45,22 @@ class Ebanx_Ebanx_Model_Observer
     {
         $ebanx = Mage::app()->getRequest()->getParam('ebanx');
 
-        $birthDate = str_pad($ebanx['birth_day'],   2, '0', STR_PAD_LEFT) . '/'
-                   . str_pad($ebanx['birth_month'], 2, '0', STR_PAD_LEFT) . '/'
-                   . $ebanx['birth_year'];
+        if (isset($ebanx['cpf']))
+            {
+            $birthDate = str_pad($ebanx['birth_day'],   2, '0', STR_PAD_LEFT) . '/'
+                       . str_pad($ebanx['birth_month'], 2, '0', STR_PAD_LEFT) . '/'
+                       . $ebanx['birth_year'];
 
-        // Save CPF and birthdate
-        $customer = Mage::getSingleton('customer/session')->getCustomer();
+            // Save CPF and birthdate
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
 
-        // Checks if the customer is already persistef before saving the custom fields
-        if ($customer->getEmail())
-        {
-            $customer->setEbanxCpf($ebanx['cpf']);
-            $customer->setEbanxBirthdate($birthDate);
-            $customer->save();
+            // Checks if the customer is already persisted before saving the custom fields
+            if ($customer->getEmail())
+            {
+                $customer->setEbanxCpf($ebanx['cpf']);
+                $customer->setEbanxBirthdate($birthDate);
+                $customer->save();
+            }
         }
 
         return $this;

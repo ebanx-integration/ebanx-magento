@@ -31,6 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
+* 1.13.0: implemented support for other countries with EBANX Checkout
 * 1.12.0: fixed translation issues
 * 1.11.0: major design changes, updated EBANX library version
 * 1.10.0: implemented installments, added custom currency converter
