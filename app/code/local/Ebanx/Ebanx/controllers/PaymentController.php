@@ -150,33 +150,6 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
     {
         if ($this->getRequest()->isGet())
         {
-            $hash = $this->getRequest()->getParam('hash');
-
-            if ($hash == null)
-            {
-              $this->getResponse()
-                 ->setRedirect(Mage::getUrl('customer/account'));
-            }
-
-            $merchantPaymentCode = $this->getRequest()->getParam('merchant_payment_code');
-
-            $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
-
-            if ($response->status == 'SUCCESS')
-            {
-                // Get the new status from Magento
-                $orderStatus = $this->_getOrderStatus($response->payment->status);
-
-                // Update order status
-                $order = Mage::getModel('sales/order')->loadByIncrementId($merchantPaymentCode);
-
-                if ($order)
-                {
-                  $order->setStatus($orderStatus)
-                        ->save();
-                }
-            }
-
             $this->getResponse()
                  ->setRedirect(Mage::getUrl('checkout/onepage/success'));
         }
