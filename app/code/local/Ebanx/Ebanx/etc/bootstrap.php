@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
+require_once Mage::getBaseDir('lib') . '/Ebanx/vendor/autoload.php';
 require_once 'utils.php';
 
 $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
