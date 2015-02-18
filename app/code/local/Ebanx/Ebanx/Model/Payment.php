@@ -277,6 +277,12 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
       // On guest checkout, get billing email address
       $email = $order->getCustomerEmail() ?: $order->getBillingAddress()->getEmail();
 
+      $state = $order->getBillingAddress()->getRegionCode();
+      if (strlen($state) > 2)
+      {
+        $state = 'PR';
+      }
+
       $params = array(
           'mode'      => 'full'
         , 'operation' => 'request'
@@ -295,7 +301,7 @@ class Ebanx_Ebanx_Model_Payment extends Mage_Payment_Model_Method_Abstract
             , 'address'           => $order->getBillingAddress()->getData('street')
             , 'street_number'     => $streetNumber
             , 'city'              => $order->getBillingAddress()->getData('city')
-            , 'state'             => $order->getBillingAddress()->getRegionCode()
+            , 'state'             => $state
             , 'country'           => 'br'
         )
       );
