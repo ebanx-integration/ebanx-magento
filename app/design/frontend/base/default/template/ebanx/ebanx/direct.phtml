@@ -176,7 +176,7 @@
     </li>
   <?php endif ?>
 
-  <?php if ($this->getMaxInstallments() > 1): ?>
+  <?php if ($this->getInstallmentsActive() && $this->getMaxInstallments() > 1): ?>
   <li class="ebanx-cc-field" id="ebanx_installments">
     <label for="ebanx_cc_installments" class="required"><em>*</em><?php echo $this->__('Installments') ?></label>
 

@@ -31,6 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
+* 1.14.1: fixed installments being shown when disabled
 * 1.14.0: workaround for brazilian state names
 * 1.13.1: fixed return error on Sandbox
 * 1.13.0: implemented support for other countries with EBANX Checkout

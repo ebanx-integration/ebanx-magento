@@ -81,7 +81,7 @@ class Ebanx_Ebanx_Block_Form extends Mage_Payment_Block_Form
     {
         $ebanxConfig = Mage::getStoreConfig('payment/ebanx');
 
-        $installmentsActive = $ebanxConfig['active_installments'];
+        $installmentsActive = (bool) $ebanxConfig['active_installments'];
 
         $currencyCode =  strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode());
 
