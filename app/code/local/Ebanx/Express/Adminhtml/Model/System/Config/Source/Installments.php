@@ -30,13 +30,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
+/**
+ * Holds the values of the maximum installments dropdown menu
+ */
+class Ebanx_Express_Adminhtml_Model_System_Config_Source_Installments
+{
+    protected $_options = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
-$ebanxStandard = Mage::getStoreConfig('payment/ebanx_standard');
-$ebanxExpress  = Mage::getStoreConfig('payment/ebanx_express');
+    public function toOptionArray()
+    {
+        $arr = array();
 
-\Ebanx\Config::set(array(
-    'integrationKey' => $ebanxStandard['integration_key'] ?: $ebanxExpress['integration_key']
-  , 'testMode'       => (intval($ebanxStandard['testing']) == 1 || intval($ebanxExpress['testing']) == 1)
-  , 'directMode'     => true
-));
+        foreach ($this->_options as $n)
+        {
+            $arr[] = array(
+                'value' => $n
+              , 'label' => $n
+            );
+        }
+
+        return $arr;
+    }
+}

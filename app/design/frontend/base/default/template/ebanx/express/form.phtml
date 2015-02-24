@@ -1,0 +1,311 @@
+<style type="text/css">
+#payment_ebanx_direct {
+    display: none;
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+.ebanx-birth {
+  width: 350px !important;
+}
+.ebanx-birth select {
+  float: left;
+}
+.ebanx-birth .day {
+  width: 60px;
+  margin-right: 10px;
+}
+#payment_ebanx_direct .cvv {
+  width: 30px;
+}
+.ebanx-method {
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin: 5px 0 0 0;
+}
+.ebanx-method .payment-method {
+  float: left;
+  display: block;
+  overflow: hidden;
+  margin: 0 20px 0 0;
+}
+.ebanx-method .payment-method input {
+  float: left;
+  clear: left;
+  margin: 4px 5px 0 0;
+}
+.ebanx-method .payment-method label {
+  cursor: pointer;
+}
+</style>
+
+<ul class="form-list" id="payment_ebanx_direct">
+  <li>
+    <label for="ebanx_cpf" class="required"><em>*</em><?php echo $this->__('CPF') ?></label>
+    <div class="input-box">
+      <input type="text" title="CPF" class="input-text required-entry validate-cpf" id="ebanx_cpf" name="ebanx[cpf]" value="<?php echo $this->getCpf() ?>">
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_birth_day" class="required"><em>*</em><?php echo $this->__('Birth Date') ?></label>
+    <div class="input-box ebanx-birth">
+      <select id="ebanx_birth_day" name="ebanx[birth_day]" class="day required-entry" autocomplete="off">
+        <option value="" <?php if (0 == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $this->__('Day') ?></option>
+        <?php for ($i = 1; $i <= 31; $i++): ?>
+          <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthDay()) echo 'selected="selected"' ?>><?php echo $i ?></option>
+        <?php endfor ?>
+      </select>
+
+      <select id="ebanx_birth_month" name="ebanx[birth_month]" class="month required-entry" autocomplete="off">
+        <option value="" <?php if (0 == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__('Month') ?></option>
+        <?php for ($i = 1; $i <= 12; $i++): ?>
+          <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthMonth()) echo 'selected="selected"' ?>><?php echo $this->__(date("F", mktime(0, 0, 0, $i, 10))) ?></option>
+        <?php endfor ?>
+      </select>
+
+      <select id="ebanx_birth_year" name="ebanx[birth_year]" class="year required-entry" autocomplete="off">
+        <option value="" <?php if (0 == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $this->__('Year') ?></option>
+        <?php for ($i = date('Y') - 16; $i > 1920; $i--): ?>
+          <option value="<?php echo $i ?>" <?php if ($i == $this->getBirthYear()) echo 'selected="selected"' ?>><?php echo $i ?></option>
+        <?php endfor ?>
+      </select>
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_cc_name" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
+    <div class="input-box">
+      <input type="text" title="Name on Card" class="input-text required-entry" id="ebanx_cc_name" name="ebanx[cc_name]" value="" autocomplete="off">
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_cc_number" class="required "><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
+    <div class="input-box">
+      <input type="text" id="ebanx_cc_number" name="ebanx[cc_number]" title="Credit Card Number" class="input-text required-entry validate-cc-ebanx validate-length minimum-length-12 maximum-length-19" value="" autocomplete="off">
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_cc_cvv" class="required"><em>*</em><?php echo $this->__('Credit Card CVV') ?></label>
+    <div class="input-box">
+      <input type="text" id="ebanx_cc_cvv" name="ebanx[cc_cvv]" title="Credit Card CVV" class="cvv input-text validate-length minimum-length-3 maximum-length-4" value="" autocomplete="off">
+    </div>
+  </li>
+
+  <li>
+    <label for="ebanx_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
+    <div class="input-box">
+      <select id="ebanx_cc_type" name="ebanx[cc_type]" title="Credit Card Type" class="required-entry" autocomplete="off">
+        <option value="" selected="selected"><?php echo $this->__('Please Select') ?></option>
+          <option value="aura"><?php echo $this->__('Aura') ?></option>
+          <option value="amex"><?php echo $this->__('American Express') ?></option>
+          <option value="diners"><?php echo $this->__('Diners') ?></option>
+          <option value="discover"><?php echo $this->__('Discover') ?></option>
+          <option value="elo"><?php echo $this->__('Elo') ?></option>
+          <option value="hipercard"><?php echo $this->__('Hipercard') ?></option>
+          <option value="mastercard"><?php echo $this->__('MasterCard') ?></option>
+          <option value="visa"><?php echo $this->__('Visa') ?></option>
+        </select>
+      </div>
+  </li>
+
+  <li>
+    <label for="ebanx_cc_expiration_month" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
+    <div class="input-box">
+      <div class="v-fix">
+        <select id="ebanx_cc_expiration_month" name="ebanx[cc_expiration_month]" class="month required-entry" autocomplete="off">
+          <option value="" selected="selected"><?php echo $this->__('Month') ?></option>
+          <option value="1">01 - <?php echo $this->__('January') ?></option>
+          <option value="2">02 - <?php echo $this->__('February') ?></option>
+          <option value="3">03 - <?php echo $this->__('March') ?></option>
+          <option value="4">04 - <?php echo $this->__('April') ?></option>
+          <option value="5">05 - <?php echo $this->__('May') ?></option>
+          <option value="6">06 - <?php echo $this->__('June') ?></option>
+          <option value="7">07 - <?php echo $this->__('July') ?></option>
+          <option value="8">08 - <?php echo $this->__('August') ?></option>
+          <option value="9">09 - <?php echo $this->__('September') ?></option>
+          <option value="10">10 - <?php echo $this->__('October') ?></option>
+          <option value="11">11 - <?php echo $this->__('November') ?></option>
+          <option value="12">12 - <?php echo $this->__('December') ?></option>
+        </select>
+      </div>
+
+      <div class="v-fix">
+        <select id="ebanx_cc_expiration_year" name="ebanx[cc_expiration_year]" class="year required-entry" autocomplete="off">
+          <option value="" selected="selected"><?php echo $this->__('Year') ?></option>
+          <?php for ($i = date('Y'); $i <= date('Y') + 20; $i++): ?>
+            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+          <?php endfor ?>
+        </select>
+      </div>
+    </div>
+  </li>
+
+  <?php if ($this->getInstallmentsActive() && $this->getMaxInstallments() > 1): ?>
+  <li class="ebanx-cc-field" id="ebanx_installments">
+    <label for="ebanx_cc_installments" class="required"><em>*</em><?php echo $this->__('Installments') ?></label>
+
+    <div class="input-box">
+      <div class="v-fix">
+        <select id="ebanx_cc_installments" name="ebanx[installments]">
+          <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?></option>
+          <?php foreach ($this->getInstallments() as $value => $total): ?>
+            <option value="<?= $value ?>"><?= $value ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $total / $value) ?></option>
+          <?php endforeach ?>
+        </select>
+      </div>
+    </div>
+  </li>
+  <?php endif ?>
+</ul>
+
+<script>
+  var ebanxRadio      = document.getElementById('p_method_ebanx_express')
+    , ebanxDirectForm = document.getElementById('payment_ebanx_direct')
+    , fieldIds = [
+        'ebanx_cpf'
+      , 'ebanx_cc_name'
+      , 'ebanx_cc_type'
+      , 'ebanx_cc_number'
+      , 'ebanx_cc_cvv'
+      , 'ebanx_cc_expiration_month'
+      , 'ebanx_cc_expiration_year'
+      , 'ebanx_birth_day'
+      , 'ebanx_birth_month'
+      , 'ebanx_birth_year'
+      , 'ebanx_cc_installments'
+    ];
+
+  /**
+   * Toggle the direct checkout form when changing the payment method
+   * @return void
+   */
+  function toggleDirectForm() {
+    if (ebanxRadio.checked == true) {
+      ebanxDirectForm.style.display = 'block';
+      enableFields();
+    } else {
+      ebanxDirectForm.style.display = 'none';
+    }
+  }
+
+  /**
+   * Enable the EBANX direct form fields (they're disabled my Magento)
+   * @return {[type]} [description]
+   */
+  function enableFields() {
+    fieldIds.forEach(function(field) {
+      var elm = document.getElementById(field);
+
+      if (elm) {
+        elm.disabled = false;
+      }
+    });
+  }
+
+   /**
+   * Toggle the direct checkout form on the click event
+   */
+  var paymentMethods = document.getElementsByName('payment[method]');
+    for (var i = 0; i < paymentMethods.length; i++) {
+        var defaultEvent = paymentMethods[i].onchange;
+        paymentMethods[i].onchange = function() {
+            toggleDirectForm();
+            if (defaultEvent) {
+                defaultEvent();
+            }
+        }
+    }
+
+  /**
+   * Hide installments if the selected card is Discover
+   */
+  function enableInstallments() {
+    var installments = document.getElementById('ebanx_installments')
+      , ccType       = document.getElementById('ebanx_cc_type');
+
+    if (!cc_type) {
+      return;
+    }
+
+    if (ccType.value == 'discover') {
+      installments.style.display = 'none';
+    } else {
+      installments.style.display = 'block';
+    }
+  };
+
+  var methodCCType = document.getElementById('ebanx_cc_type');
+  if (methodCCType) {
+    methodCCType.onchange = enableInstallments;
+  }
+
+  /**
+   * Validates the CPF number
+   *
+   */
+  function validateCpf(cpf) {
+    var digits = cpf.replace(/[\D]/g, '')
+      , dv1, dv2, sum, mod;
+
+    if (digits.length == 11) {
+      d = digits.split('');
+
+      sum = d[0] * 10 + d[1] * 9 + d[2] * 8 + d[3] * 7 + d[4] * 6 + d[5] * 5 + d[6] * 4 + d[7] * 3 + d[8] * 2;
+      mod = sum % 11;
+      dv1 = (11 - mod < 10 ? 11 - mod : 0);
+
+      sum = d[0] * 11 + d[1] * 10 + d[2] * 9 + d[3] * 8 + d[4] * 7 + d[5] * 6 + d[6] * 5 + d[7] * 4 + d[8] * 3 + dv1 * 2;
+      mod = sum % 11;
+      dv2 = (11 - mod < 10 ? 11 - mod : 0);
+
+      return dv1 == d[9] && dv2 == d[10];
+    }
+
+    return false;
+  }
+  Validation.add('validate-cpf', "<?php echo $this->__('The supplied CPF is invalid')?>", function(cpf) { return validateCpf(cpf); });
+
+  /**
+   * Updates the credit card issuer depending on its number
+   */
+  function updateCCIssuer() {
+    var ccNumber = this.value
+      , ccType   = document.getElementById('ebanx_cc_type');
+
+    function toggleType(type) {
+      ccType.value = type;
+    }
+
+    if (ccNumber.match(/^4[0-9]{12}(?:[0-9]{3})?$/)) {
+      toggleType('visa');
+    } else if (ccNumber.match(/^5[1-5][0-9]{14}$/)) {
+      toggleType('mastercard');
+    } else if (ccNumber.match(/^3[47][0-9]{13}$/)) {
+      toggleType('amex');
+    } else if (ccNumber.match(/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/)) {
+      toggleType('diners');
+    } else if (ccNumber.match(/^6(?:011|5[0-9]{2})[0-9]{12}$/)) {
+      toggleType('discover');
+    } else if (ccNumber.match(/^(636368|438935|504175|451416|636297|5067|4576|4011)/)) {
+      toggleType('elo');
+    } else if (ccNumber.match(/^50[0-9]{14,17}$/)) {
+      toggleType('aura');
+    } else {
+      toggleType('');
+    }
+
+    // Enable/disable installments depending on the card
+    enableInstallments();
+  }
+
+  var ccNumber = document.getElementById('ebanx_cc_number');
+  if (ccNumber) {
+    ccNumber.onkeydown = updateCCIssuer;
+    ccNumber.onchange  = updateCCIssuer;
+    ccNumber.oninput   = updateCCIssuer;
+  }
+</script>

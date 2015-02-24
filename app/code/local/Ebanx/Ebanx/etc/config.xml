@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Ebanx_Ebanx>
-      <version>1.11.0</version>
+      <version>1.15.0</version>
     </Ebanx_Ebanx>
   </modules>
 
@@ -19,7 +19,6 @@
       </ebanx_setup>
     </resources>
 
-
     <currency>
       <import>
         <services>
@@ -31,43 +30,11 @@
       </import>
     </currency>
 
-    <models>
-      <ebanx>
-        <class>Ebanx_Ebanx_Model</class>
-      </ebanx>
-      <ebanx_adminhtml>
-        <class>Ebanx_Ebanx_Adminhtml_Model</class>
-      </ebanx_adminhtml>
-    </models>
-
     <helpers>
       <ebanx>
         <class>Ebanx_Ebanx_Helper</class>
       </ebanx>
     </helpers>
-
-    <payment>
-      <groups>
-        <ebanx>Ebanx</ebanx>
-      </groups>
-    </payment>
-
-    <blocks>
-      <ebanx>
-        <class>Ebanx_Ebanx_Block</class>
-      </ebanx>
-    </blocks>
-
-    <events>
-      <checkout_type_onepage_save_order_after>
-        <observers>
-          <ebanx_observer>
-            <class>Ebanx_Ebanx_Model_Observer</class>
-            <method>saveOrderQuoteToSession</method>
-          </ebanx_observer>
-        </observers>
-      </checkout_type_onepage_save_order_after>
-    </events>
   </global>
 
   <frontend>
@@ -90,44 +57,5 @@
         </args>
       </ebanx>
     </routers>
-
-    <layout>
-      <updates>
-        <ebanx>
-          <file>ebanx.xml</file>
-        </ebanx>
-      </updates>
-    </layout>
-    </frontend>
-
-  <default>
-    <payment>
-      <ebanx>
-        <model>ebanx/payment</model>
-        <group>ebanx</group>
-        <active>1</active>
-        <title>Payments for Latin American customers</title>
-        <payment_action>authorize</payment_action>
-        <testing>1</testing>
-        <direct>0</direct>
-        <direct_cards>0</direct_cards>
-        <payment_type_code>_all</payment_type_code>
-        <order_status>processing</order_status>
-        <new_order_status>pending</new_order_status>
-        <paid_order_status>complete</paid_order_status>
-        <canceled_order_status>canceled</canceled_order_status>
-        <active_installments>0</active_installments>
-        <maximum_installments>12</maximum_installments>
-        <installments_mode>compound</installments_mode>
-        <interest_installments>0.0</interest_installments>
-        <title_checkout>Payments for Latin American customers</title_checkout>
-        <direct_payment_methods>boleto,tef</direct_payment_methods>
-        <boleto_due_date>3</boleto_due_date>
-        <paymentcurrency>base</paymentcurrency>
-        <activationstatus>0</activationstatus>
-        <allowspecific>0</allowspecific>
-        <specificcountry>BR</specificcountry>
-      </ebanx>
-    </payment>
-  </default>
+  </frontend>
 </config>

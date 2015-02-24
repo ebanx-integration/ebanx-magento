@@ -30,13 +30,39 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
+/**
+ * Observer class that saves order data to the session,
+ * so it can be retrieved during the checkout
+ */
+class Ebanx_Express_Model_Observer
+{
+    /**
+     * Saves the customer data
+     * @param  Object $observer
+     * @return Object
+     */
+    public function saveOrderQuoteToSession($observer)
+    {
+        $ebanx = Mage::app()->getRequest()->getParam('ebanx');
 
-$ebanxStandard = Mage::getStoreConfig('payment/ebanx_standard');
-$ebanxExpress  = Mage::getStoreConfig('payment/ebanx_express');
+        if (isset($ebanx['cpf']))
+            {
+            $birthDate = str_pad($ebanx['birth_day'],   2, '0', STR_PAD_LEFT) . '/'
+                       . str_pad($ebanx['birth_month'], 2, '0', STR_PAD_LEFT) . '/'
+                       . $ebanx['birth_year'];
 
-\Ebanx\Config::set(array(
-    'integrationKey' => $ebanxStandard['integration_key'] ?: $ebanxExpress['integration_key']
-  , 'testMode'       => (intval($ebanxStandard['testing']) == 1 || intval($ebanxExpress['testing']) == 1)
-  , 'directMode'     => true
-));
+            // Save CPF and birthdate
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
+
+            // Checks if the customer is already persisted before saving the custom fields
+            if ($customer->getEmail())
+            {
+                $customer->setEbanxCpf($ebanx['cpf']);
+                $customer->setEbanxBirthdate($birthDate);
+                $customer->save();
+            }
+        }
+
+        return $this;
+    }
+}

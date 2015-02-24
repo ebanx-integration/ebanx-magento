@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Ebanx_Standard>
+      <version>1.0.0</version>
+    </Ebanx_Standard>
+  </modules>
+
+  <global>
+    <models>
+      <ebanx_standard>
+        <class>Ebanx_Standard_Model</class>
+      </ebanx_standard>
+    </models>
+
+    <helpers>
+      <ebanx_standard>
+        <class>Ebanx_Standard_Helper</class>
+      </ebanx_standard>
+    </helpers>
+
+    <payment>
+      <groups>
+        <ebanx_standard>Ebanx</ebanx_standard>
+      </groups>
+    </payment>
+
+    <blocks>
+      <ebanx_standard>
+        <class>Ebanx_Standard_Block</class>
+      </ebanx_standard>
+    </blocks>
+  </global>
+
+  <frontend>
+    <translate>
+      <modules>
+        <Ebanx_Standard>
+          <files>
+            <default>Ebanx_Standard.csv</default>
+          </files>
+        </Ebanx_Standard>
+      </modules>
+    </translate>
+  </frontend>
+
+  <default>
+    <payment>
+      <ebanx_standard>
+        <model>ebanx_standard/payment</model>
+        <group>ebanx</group>
+        <active>1</active>
+        <title>EBANX Standard - Payment methods for Brazil, Mexico and Peru</title>
+        <payment_action>authorize</payment_action>
+        <testing>1</testing>
+        <order_status>processing</order_status>
+        <new_order_status>pending</new_order_status>
+        <paid_order_status>complete</paid_order_status>
+        <canceled_order_status>canceled</canceled_order_status>
+        <title_checkout>EBANX - Payment methods for Brazil, Mexico and Peru</title_checkout>
+        <paymentcurrency>base</paymentcurrency>
+        <activationstatus>0</activationstatus>
+        <allowspecific>0</allowspecific>
+        <specificcountry>BR</specificcountry>
+      </ebanx_standard>
+    </payment>
+  </default>
+</config>

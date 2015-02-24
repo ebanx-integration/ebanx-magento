@@ -1,11 +1,13 @@
 <config>
   <modules>
-    <Ebanx_Ebanx>
+    <Ebanx_Express>
       <active>true</active>
       <codePool>local</codePool>
       <depends>
+        <Mage_Adminhtml />
         <Mage_Core />
+        <Mage_Payment />
       </depends>
-    </Ebanx_Ebanx>
+    </Ebanx_Express>
   </modules>
 </config>

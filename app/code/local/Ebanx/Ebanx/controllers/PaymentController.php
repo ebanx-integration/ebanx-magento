@@ -171,39 +171,4 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
 
         return $orderStatus[$status];
     }
-
-    /**
-     * Success action for boleto payments
-     * @return void
-     */
-    public function successAction()
-    {
-        $hash     = $this->getRequest()->getParam('hash');
-        $response = \Ebanx\Ebanx::doQuery(array('hash' => $hash));
-
-        // Shows the boleto print page
-        if ($response->payment->payment_type_code == 'boleto')
-        {
-            // Render the success page - inherits the default success page
-            $incrementId = $response->payment->merchant_payment_code;
-            $order = Mage::getModel('sales/order')->load($incrementId, 'increment_id');
-
-            $this->loadLayout();
-            $this->getLayout()
-                 ->getBlock('content')
-                 ->setTemplate('ebanx/payment/success.phtml');
-
-            // hacks!
-            $_SESSION['boletoUrl'] = $response->payment->boleto_url;
-
-            Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($order->getId())));
-            $this->loadLayout()->renderLayout();
-        }
-        // If it was a credit card payment redirects to the success page
-        else
-        {
-            $this->getResponse()
-                 ->setRedirect(Mage::getUrl('checkout/onepage/success'));
-        }
-    }
 }
