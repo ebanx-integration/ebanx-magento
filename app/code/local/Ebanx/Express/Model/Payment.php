@@ -179,6 +179,9 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
         $state = 'PR';
       }
 
+      $ccExpiration = str_pad($ebanx['cc_expiration_month'], 2, '0', STR_PAD_LEFT) . '/'
+                        . $ebanx['cc_expiration_year'];
+
       $params = array(
           'mode'      => 'full'
         , 'operation' => 'request'
@@ -190,7 +193,7 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
             , 'phone_number'      => $order->getBillingAddress()->getTelephone()
             , 'currency_code'     => $currencyCode
             , 'amount_total'      => $amountTotal
-            , 'payment_type_code' => $ebanx['method']
+            , 'payment_type_code' => $ebanx['cc_type']
             , 'merchant_payment_code' => $orderId
             , 'order_number'      => $order->getIncrementId()
             , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
@@ -199,34 +202,25 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
             , 'city'              => $order->getBillingAddress()->getData('city')
             , 'state'             => $state
             , 'country'           => 'br'
+            , 'creditcard'        => array(
+                'card_name'     => $ebanx['cc_name']
+              , 'card_number'   => $ebanx['cc_number']
+              , 'card_cvv'      => $ebanx['cc_cvv']
+              , 'card_due_date' => $ccExpiration
+            )
         )
       );
-
-      // Add credit card fields if the method is credit card
-      if ($ebanx['method'] == 'creditcard')
-      {
-          $ccExpiration = str_pad($ebanx['cc_expiration_month'], 2, '0', STR_PAD_LEFT) . '/'
-                        . $ebanx['cc_expiration_year'];
-
-          $params['payment']['payment_type_code'] = $ebanx['cc_type'];
-          $params['payment']['creditcard'] = array(
-              'card_name'     => $ebanx['cc_name']
-            , 'card_number'   => $ebanx['cc_number']
-            , 'card_cvv'      => $ebanx['cc_cvv']
-            , 'card_due_date' => $ccExpiration
-          );
-      }
 
       // If has installments, adjust total
       if (isset($ebanx['installments']))
       {
-        if ($ebanx['method'] == 'creditcard' && intval($ebanx['installments']) > 1)
+        if (intval($ebanx['installments']) > 1)
         {
           $interestRate = floatval(Mage::getStoreConfig('payment/ebanx_express/interest_installments'));
           $interestMode = Mage::getStoreConfig('payment/ebanx_express/installments_mode');
 
           $params['payment']['instalments']  = intval($ebanx['installments']);
-          $params['payment']['amount_total'] = Ebanx_Ebanx_Utils::calculateTotalWithInterest(
+          $params['payment']['amount_total'] = Ebanx_Express_Utils::calculateTotalWithInterest(
                                                     $interestMode
                                                   , $interestRate
                                                   , $amountTotal
@@ -258,7 +252,7 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
               // Redirect to EBANX success page on client store
               else
               {
-                $_SESSION['ebxRedirectUrl'] = Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash;
+                $_SESSION['ebxRedirectUrl'] = Mage::getUrl('checkout/onepage/success') . '?hash=' . $hash;
               }
 
               Mage::log('Authorizing order [' . $order->getIncrementId() . '] - success');

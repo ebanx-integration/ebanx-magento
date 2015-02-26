@@ -131,6 +131,7 @@ class Ebanx_Express_Block_Form extends Mage_Payment_Block_Form
          , 'birth_day'           => $birthDay
          , 'birth_month'         => $birthMonth
          , 'birth_year'          => $birthYear
+         , 'has_interest'        => intval($interestRate) > 0
         ));
     }
 }

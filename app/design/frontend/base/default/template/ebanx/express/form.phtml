@@ -151,9 +151,9 @@
     <div class="input-box">
       <div class="v-fix">
         <select id="ebanx_cc_installments" name="ebanx[installments]">
-          <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?></option>
+          <option value="1">1x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $this->getPriceUpfront()) ?> <?php echo $this->__('sem juros') ?></option>
           <?php foreach ($this->getInstallments() as $value => $total): ?>
-            <option value="<?= $value ?>"><?= $value ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $total / $value) ?></option>
+            <option value="<?= $value ?>"><?= $value ?>x <?= $this->getCurrencySymbol() ?><?= money_format("%i", $total / $value) ?> <?php echo $this->hasInterest ? $this->__('com juros') : $this->__('sem juros') ?></option>
           <?php endforeach ?>
         </select>
       </div>
@@ -227,7 +227,7 @@
     var installments = document.getElementById('ebanx_installments')
       , ccType       = document.getElementById('ebanx_cc_type');
 
-    if (!cc_type) {
+    if (!ccType) {
       return;
     }
 
