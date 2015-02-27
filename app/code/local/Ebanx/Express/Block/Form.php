@@ -77,15 +77,20 @@ class Ebanx_Express_Block_Form extends Mage_Payment_Block_Form
         $currencyCode =  strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode());
 
         // Enforces minimum installment value (R$20)
-        $maxInstallments  = intval($ebanxConfig['maximum_installments']);
+        $maxInstallments  = explode(',', $ebanxConfig['maximum_installments']);
         $interestRate     = $ebanxConfig['interest_installments'];
         $interestMode     = $ebanxConfig['installments_mode'];
         $total            = $this->getFinalValue();
         $installmentsOptions = array();
 
         // Setup installment options
-        for ($i = 2; $i <= $maxInstallments; $i++)
+        foreach ($maxInstallments as $i)
         {
+            if ($i == 1)
+            {
+                continue;
+            }
+
             // Minimum amount per installment is R$20
             if (($total / $i) >= 20)
             {
