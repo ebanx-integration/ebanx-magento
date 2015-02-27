@@ -38,16 +38,6 @@
   </global>
 
   <frontend>
-    <translate>
-      <modules>
-        <Ebanx_Ebanx>
-          <files>
-            <default>Ebanx_Ebanx.csv</default>
-          </files>
-        </Ebanx_Ebanx>
-      </modules>
-    </translate>
-
     <routers>
       <ebanx>
         <use>standard</use>
