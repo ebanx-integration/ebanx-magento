@@ -163,10 +163,10 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
     protected function _getOrderStatus($status)
     {
         $orderStatus = array(
-            'CO' => Mage::getStoreConfig('payment/ebanx/paid_order_status')
-          , 'PE' => Mage::getStoreConfig('payment/ebanx/new_order_status')
-          , 'CA' => Mage::getStoreConfig('payment/ebanx/canceled_order_status')
-          , 'OP' => Mage::getStoreConfig('payment/ebanx/order_status')
+            'CO' => Mage::getStoreConfig('payment/ebanx_standard/paid_order_status')     ?: Mage::getStoreConfig('payment/ebanx_express/paid_order_status')
+          , 'PE' => Mage::getStoreConfig('payment/ebanx_standard/new_order_status')      ?: Mage::getStoreConfig('payment/ebanx_express/new_order_status')
+          , 'CA' => Mage::getStoreConfig('payment/ebanx_standard/canceled_order_status') ?: Mage::getStoreConfig('payment/ebanx_express/canceled_order_status')
+          , 'OP' => Mage::getStoreConfig('payment/ebanx_standard/order_status')          ?: Mage::getStoreConfig('payment/ebanx_express/order_status')
         );
 
         return $orderStatus[$status];
