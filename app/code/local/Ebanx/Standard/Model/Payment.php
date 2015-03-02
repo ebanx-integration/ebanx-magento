@@ -210,7 +210,7 @@ class Ebanx_Standard_Model_Payment extends Mage_Payment_Model_Method_Abstract
             // Redirect to EBANX success page on client store
             else
             {
-              $_SESSION['ebxRedirectUrl'] = Mage::getUrl('ebanx/payment/success') . '?hash=' . $hash;
+              $_SESSION['ebxRedirectUrl'] = Mage::getUrl('checkout/onepage/success') . '?hash=' . $hash;
             }
 
             Mage::log('Authorizing order [' . $order->getIncrementId() . '] - success');

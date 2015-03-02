@@ -32,11 +32,10 @@
 
 require_once Mage::getBaseDir('lib') . '/Ebanx/src/autoload.php';
 
-$ebanxStandard = Mage::getStoreConfig('payment/ebanx_standard');
-$ebanxExpress  = Mage::getStoreConfig('payment/ebanx_express');
+$ebanx = Mage::getStoreConfig('payment/ebanx');
 
 \Ebanx\Config::set(array(
-    'integrationKey' => (strlen($ebanxStandard['integration_key'])) ? $ebanxStandard['integration_key'] : $ebanxExpress['integration_key']
-  , 'testMode'       => (intval($ebanxStandard['testing']) == 1 || intval($ebanxExpress['testing']) == 1)
+    'integrationKey' => $ebanx['integration_key']
+  , 'testMode'       => (intval($ebanx['testing']) == 1)
   , 'directMode'     => true
 ));

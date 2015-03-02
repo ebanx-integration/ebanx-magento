@@ -147,7 +147,7 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
       $streetNumber = ($streetNumber > 0) ? $streetNumber : '1';
 
       // Defines the order ID, if in test append time() to avoid errors
-      $testMode = (intval(Mage::getStoreConfig('payment/ebanx_express/testing')) == 1);
+      $testMode = (intval(Mage::getStoreConfig('payment/ebanx/testing')) == 1);
       $orderId  = $order->getIncrementId() . ($testMode ? time() : '');
 
       // Cut order ID in test mode
