@@ -64,8 +64,7 @@
         <model>ebanx_express/payment</model>
         <group>ebanx</group>
         <active>1</active>
-        <title>EBANX Express - Credit cards for Brazil</title>
-        <title_checkout>Credit cards for Brazil</title_checkout>
+        <title>Credit cards for Brazil</title>
         <payment_action>authorize</payment_action>
         <active_installments>0</active_installments>
         <maximum_installments>1</maximum_installments>

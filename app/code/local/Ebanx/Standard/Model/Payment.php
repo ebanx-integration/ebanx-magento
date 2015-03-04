@@ -167,6 +167,8 @@ class Ebanx_Standard_Model_Payment extends Mage_Payment_Model_Method_Abstract
       $currencyCode = $order->getOrderCurrency()->getCurrencyCode();
     }
 
+    $dueDate = date('d/m/Y', strtotime('+' . intval(Mage::getStoreConfig('payment/ebanx_standard/due_date')) . $dueDays . 'days'));
+
     // On guest checkout, get billing email address
     $email = $order->getCustomerEmail() ?: $order->getBillingAddress()->getEmail();
 
@@ -178,6 +180,7 @@ class Ebanx_Standard_Model_Payment extends Mage_Payment_Model_Method_Abstract
         , 'amount'            => $amountTotal
         , 'payment_type_code' => '_all'
         , 'merchant_payment_code' => $orderId
+        , 'due_date'          => $dueDate
         , 'order_number'      => $order->getIncrementId()
         , 'zipcode'           => $order->getBillingAddress()->getData('postcode')
         , 'address'           => $order->getBillingAddress()->getData('street')

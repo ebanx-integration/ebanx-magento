@@ -50,8 +50,7 @@
         <model>ebanx_standard/payment</model>
         <group>ebanx</group>
         <active>1</active>
-        <title>EBANX Standard - Payment methods for Brazil, Mexico and Peru</title>
-        <title_checkout>EBANX - Payment methods for Brazil, Mexico and Peru</title_checkout>
+        <title>EBANX - Payment methods for Brazil, Mexico and Peru</title>
         <payment_action>authorize</payment_action>
         <due_date>3</due_date>
         <paymentcurrency>base</paymentcurrency>

@@ -48,6 +48,19 @@ $this->addAttribute('customer', 'ebanx_birthdate', array(
 try
 {
   $this->run("
+    UPDATE sales_flat_order_payment
+    SET method = 'ebanx_standard'
+    WHERE method = 'ebanx';
+  ");
+}
+catch(Exception $e)
+{
+  Mage::logException($e);
+}
+
+try
+{
+  $this->run("
     INSERT INTO `{$this->getTable('directory/country_region')}`
     (`country_id`,`default_name`,`code`) VALUES
     ('BR','Acre','AC'),
