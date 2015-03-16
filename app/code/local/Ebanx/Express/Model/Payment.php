@@ -231,6 +231,8 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
 
       try
       {
+          // Set DirectMode as true
+          \Ebanx\Config::setDirectMode(true);
           $response = \Ebanx\Ebanx::doRequest($params);
 
           Mage::log('Authorizing order [' . $order->getIncrementId() . '] - calling EBANX');
