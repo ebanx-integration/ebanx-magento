@@ -137,6 +137,11 @@ class Ebanx_Standard_Model_Payment extends Mage_Payment_Model_Method_Abstract
     $session = Mage::getSingleton('checkout/session');
     $order   = $payment->getOrder();
 
+    // Update status to the one specified in the settings
+    Mage::getStoreConfig('payment/ebanx/new_order_status');
+    $order->addStatusToHistory($orderStatus, 'Default EBANX status.', false)
+          ->save();
+
     Mage::log('Authorizing order [' . $order->getApiOrderId() . ']');
 
     // Street number workaround
