@@ -136,11 +136,6 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
       $order   = $payment->getOrder();
       $ebanx   = Mage::app()->getRequest()->getParam('ebanx');
 
-      // Update status to the one specified in the settings
-      Mage::getStoreConfig('payment/ebanx/new_order_status');
-      $order->addStatusToHistory($orderStatus, 'Default EBANX status.', false)
-            ->save();
-
       Mage::log('Authorizing order [' . $order->getApiOrderId() . ']');
 
       $birthDate = str_pad($ebanx['birth_day'],   2, '0', STR_PAD_LEFT) . '/'

@@ -65,6 +65,7 @@
         <group>ebanx</group>
         <active>1</active>
         <title>Credit cards for Brazil</title>
+        <order_status>pending</order_status>
         <payment_action>authorize</payment_action>
         <active_installments>0</active_installments>
         <maximum_installments>1</maximum_installments>
