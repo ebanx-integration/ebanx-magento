@@ -51,7 +51,7 @@
         <group>ebanx</group>
         <active>1</active>
         <title>EBANX - Payment methods for Brazil, Mexico and Peru</title>
-        <order_status>pending</order_status>
+        <order_status>processing</order_status>
         <payment_action>authorize</payment_action>
         <due_date>3</due_date>
         <paymentcurrency>base</paymentcurrency>
