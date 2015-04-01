@@ -345,6 +345,7 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
         , "BP-DR-71" => "O código do banco não pode ter mais de 5 caracteres"
         , "BP-DR-72" => "É necessário informar o código do banco"
         , "BP-DR-73" => "É necessário informar os dados da conta para débito em conta"
+        , "BP-DR-83" => "Não é possível processar cartões emitidos no exterior."
         , "BP-R-1" => "É necessário informar a moeda"
         , "BP-R-2" => "É necessário informar o valor do pagamento"
         , "BP-R-3" => "É necessário informar o código do pedido"
