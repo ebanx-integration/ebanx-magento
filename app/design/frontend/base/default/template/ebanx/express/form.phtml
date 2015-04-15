@@ -1,9 +1,4 @@
 <style type="text/css">
-#payment_ebanx_direct {
-    display: none;
-    margin: 0;
-    padding: 0 0 0 20px;
-}
 .ebanx-birth {
   width: 350px !important;
 }
@@ -40,7 +35,7 @@
 }
 </style>
 
-<ul class="form-list" id="payment_ebanx_direct">
+<ul class="form-list" id="payment_form_ebanx_express" style="display:none;">
   <li>
     <label for="ebanx_cpf" class="required"><em>*</em><?php echo $this->__('CPF') ?></label>
     <div class="input-box">
@@ -178,70 +173,6 @@
       , 'ebanx_birth_year'
       , 'ebanx_cc_installments'
     ];
-
-  /**
-   * Toggle the direct checkout form when changing the payment method
-   * @return void
-   */
-  function toggleDirectForm() {
-    if (ebanxRadio.checked == true) {
-      ebanxDirectForm.style.display = 'block';
-      enableFields();
-    } else {
-      ebanxDirectForm.style.display = 'none';
-    }
-  }
-
-  /**
-   * Enable the EBANX direct form fields (they're disabled my Magento)
-   * @return {[type]} [description]
-   */
-  function enableFields() {
-    fieldIds.forEach(function(field) {
-      var elm = document.getElementById(field);
-
-      if (elm) {
-        elm.disabled = false;
-      }
-    });
-  }
-
-   /**
-   * Toggle the direct checkout form on the click event
-   */
-  var paymentMethods = document.getElementsByName('payment[method]');
-    for (var i = 0; i < paymentMethods.length; i++) {
-        var defaultEvent = paymentMethods[i].onchange;
-        paymentMethods[i].onchange = function() {
-            toggleDirectForm();
-            if (defaultEvent) {
-                defaultEvent();
-            }
-        }
-    }
-
-  /**
-   * Hide installments if the selected card is Discover
-   */
-  function enableInstallments() {
-    var installments = document.getElementById('ebanx_installments')
-      , ccType       = document.getElementById('ebanx_cc_type');
-
-    if (!ccType) {
-      return;
-    }
-
-    if (ccType.value == 'discover') {
-      installments.style.display = 'none';
-    } else {
-      installments.style.display = 'block';
-    }
-  };
-
-  var methodCCType = document.getElementById('ebanx_cc_type');
-  if (methodCCType) {
-    methodCCType.onchange = enableInstallments;
-  }
 
   /**
    * Validates the CPF number
