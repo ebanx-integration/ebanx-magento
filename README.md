@@ -31,7 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
-* 1.15.1
+* 1.15.2: workaround for compilation
 * 1.15.0: split modules in two (Standard Checkout and Express Checkout)
 * 1.14.1: fixed installments being shown when disabled
 * 1.14.0: workaround for brazilian state names

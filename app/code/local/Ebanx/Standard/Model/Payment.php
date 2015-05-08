@@ -30,7 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once dirname(dirname(__FILE__)) . '/etc/bootstrap.php';
+// Workaround for Magento compilation
+$compiledBootstrap = 'Ebanx_Ebanx_etc_bootstrap.php';
+
+if (file_exists($compiledBootstrap))
+{
+  require_once $compiledBootstrap;
+}
+else
+{
+  require_once dirname(dirname(__FILE__)) . '/etc/bootstrap.php';
+}
 
 class Ebanx_Standard_Model_Payment extends Mage_Payment_Model_Method_Abstract
 {
