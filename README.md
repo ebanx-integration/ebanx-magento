@@ -31,6 +31,7 @@ git clone --recursive https://github.com/ebanx/ebanx-magento.git
 7. That's all!
 
 ## Changelog
+* 1.16.0: show module settings in store scope
 * 1.15.2: workaround for compilation
 * 1.15.0: split modules in two (Standard Checkout and Express Checkout)
 * 1.14.1: fixed installments being shown when disabled
