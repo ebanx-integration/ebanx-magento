@@ -148,11 +148,23 @@ class Ebanx_Ebanx_PaymentController extends Mage_Core_Controller_Front_Action
      */
     public function returnAction()
     {
-        if ($this->getRequest()->isGet())
+        $storeCode = 'default';
+
+        $hash = $this->getRequest()->getParam('hash');
+        $orderPayment = Mage::getModel('sales/order_payment')
+                            ->getCollection()
+                            ->addFieldToFilter('ebanx_hash', $hash)
+                            ->getFirstItem();
+
+        if ($orderPayment)
         {
-            $this->getResponse()
-                 ->setRedirect(Mage::getUrl('checkout/onepage/success'));
+            $order = Mage::getModel('sales/order')
+                        ->load($orderPayment->getParentId(), 'entity_id');
+            $storeCode = ($order->getStore()->getCode()) ?: 'default';
         }
+
+        $this->getResponse()
+             ->setRedirect(Mage::getUrl('checkout/onepage/success', array('_store' => $storeCode)));
     }
 
     /**
