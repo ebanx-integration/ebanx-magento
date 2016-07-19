@@ -78,8 +78,6 @@ class Ebanx_Express_Block_Form extends Mage_Payment_Block_Form
 
         // Enforces minimum installment value (R$20)
         $maxInstallments  = explode(',', $ebanxConfig['maximum_installments']);
-        $interestRate     = $ebanxConfig['interest_installments'];
-        $interestMode     = $ebanxConfig['installments_mode'];
         $total            = $this->getFinalValue();
         $installmentsOptions = array();
 
@@ -94,12 +92,7 @@ class Ebanx_Express_Block_Form extends Mage_Payment_Block_Form
             // Minimum amount per installment is R$20
             if (($total / $i) >= 20)
             {
-                $installmentsOptions[$i] = Ebanx_Express_Utils::calculateTotalWithInterest(
-                                                  $interestMode
-                                                , $interestRate
-                                                , $total
-                                                , $i
-                                            );
+                $installmentsOptions[$i] = Ebanx_Express_Utils::calculateTotalWithInterest($total, $i);
             }
         }
 
