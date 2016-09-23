@@ -198,6 +198,7 @@ class Ebanx_Standard_Model_Payment extends Mage_Payment_Model_Method_Abstract
         , 'city'              => $order->getBillingAddress()->getData('city')
         , 'state'             => $order->getBillingAddress()->getRegionCode()
         , 'country'           => strtolower($order->getBillingAddress()->getCountry())
+        , 'plugin_source'     => 'Magento ver. ' . \Mage::getVersion()
     );
 
     try
