@@ -218,6 +218,7 @@ class Ebanx_Express_Model_Payment extends Mage_Payment_Model_Method_Abstract
               , 'card_cvv'      => $ebanx['cc_cvv']
               , 'card_due_date' => $ccExpiration
             )
+            , 'plugin_source'     => 'Magento ver. ' . \Mage::getVersion()
         )
       );
 
