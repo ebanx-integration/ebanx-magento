@@ -1,3 +1,7 @@
+# Deprecation notice
+
+This plugin is **deprecated**. Please, check out our new [Magento 1.9 Plugin](https://github.com/ebanx/magento-gateway-ebanx).
+
 # EBANX Magento Payment Gateway Extension
 
 This plugin allows you to integrate your Magento store with the EBANX payment gateway.
