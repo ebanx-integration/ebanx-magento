@@ -1,3 +1,5 @@
+> ⚠️ **DEPRECATED** — This repository is no longer maintained. Please refer to the [official EBANX documentation](https://docs.ebanx.com/) for up-to-date integration options.
+
 # Deprecation notice
 
 This plugin is **deprecated**. Please, check out our new [Magento 1.9 Plugin](https://github.com/ebanx/magento-gateway-ebanx).
