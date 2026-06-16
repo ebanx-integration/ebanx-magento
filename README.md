@@ -1,4 +1,4 @@
-> ⚠️ **DEPRECATED** — This repository is no longer maintained. Please refer to the [official EBANX documentation](https://www.ebanx.com/business/en/developers) for up-to-date integration options.
+> ⚠️ **DEPRECATED** — This repository is no longer maintained. Please refer to the [official EBANX documentation](https://docs.ebanx.com/) for up-to-date integration options.
 
 # Deprecation notice
 
